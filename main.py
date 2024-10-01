@@ -134,25 +134,15 @@ total_rewards = result_df['Reward (KAS)'].sum()
 # Afficher la somme totale des récompenses avec séparateur de milliers et en gras
 st.markdown(f"Somme totale des récompenses sur 24 mois : **{total_rewards:,.2f} KAS**")
 
-# Fonction de calcul sans réinvestissement (en utilisant les rewards précises)
-def calculate_months_no_reinvestment(kas_amount, rewards, max_months=24, min_kas_threshold=0.01):
-    months = 0
-    for reward in rewards:  # 'reward' est directement une valeur float
-        if kas_amount <= min_kas_threshold or months >= max_months:
-            break
-        kas_amount -= reward  # Déduire directement la valeur de reward (en KAS)
-        months += 1
-    return months
-
-# Fonction de calcul avec réinvestissement (en utilisant les rewards précises)
-def calculate_months_with_reinvestment(kas_amount, rewards, electricity_cost, kas_growth_factor, kas_price, reinvest_percentage=0.5, max_months=240, min_kas_threshold=0.01):
+# Fonction de calcul avec réinvestissement de 75% du coût de l'électricité
+def calculate_months_with_75_percent_reinvestment(kas_amount, rewards, electricity_cost, kas_growth_factor, kas_price, reinvest_percentage=0.75, max_months=24, min_kas_threshold=0.01):
     months = 0
     current_kas_price = kas_price  # Prix initial du KAS
     for reward in rewards:  # 'reward' est directement une valeur float
         if kas_amount <= min_kas_threshold or months >= max_months:
             break
         
-        # Réinvestir 50% du coût de l'électricité pour acheter du KAS
+        # Réinvestir 75% du coût de l'électricité pour acheter du KAS
         kas_bought_with_reinvestment = (electricity_cost * reinvest_percentage) / current_kas_price
         kas_amount += kas_bought_with_reinvestment
         
@@ -169,8 +159,11 @@ def calculate_months_with_reinvestment(kas_amount, rewards, electricity_cost, ka
 # Calcul sans réinvestissement
 months_no_reinvestment = calculate_months_no_reinvestment(initial_kas_amount, rewards)
 
-# Calcul avec réinvestissement
-months_with_reinvestment = calculate_months_with_reinvestment(initial_kas_amount, rewards, electricity_cost_per_month, kas_growth_factor, kas_price)
+# Calcul avec réinvestissement de 50%
+months_with_50_percent_reinvestment = calculate_months_with_reinvestment(initial_kas_amount, rewards, electricity_cost_per_month, kas_growth_factor, kas_price)
+
+# Calcul avec réinvestissement de 75%
+months_with_75_percent_reinvestment = calculate_months_with_75_percent_reinvestment(initial_kas_amount, rewards, electricity_cost_per_month, kas_growth_factor, kas_price)
 
 # Afficher le coût mensuel et le coût total d'électricité
 st.markdown(f"Coût mensuel de l'électricité : **{electricity_cost_per_month:,.2f} $ /mois**")
@@ -195,3 +188,4 @@ else:
 # Affichage des résultats
 st.write(f"Nombre de mois garantis sans réinvestissement : {months_no_reinvestment} mois")
 st.write(f"Nombre de mois garantis avec réinvestissement de 50% du coût d'électricité : {months_with_reinvestment} mois")
+st.write(f"Nombre de mois garantis avec réinvestissement de 75% du coût d'électricité : {months_with_75_percent_reinvestment} mois")
