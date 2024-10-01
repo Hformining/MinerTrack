@@ -159,6 +159,11 @@ else:
 
 
 def calculate_months(kas_amount, electricity_cost, kas_growth_factor, percentage_conserved, max_months=24, min_kas_threshold=0.01):
+    """
+    Calcule le nombre de mois pendant lesquels il est possible de tenir avec la quantité initiale de KAS,
+    en prenant en compte l'augmentation du prix du KAS et le réinvestissement.
+    """
+    
     months = 0
     current_kas_price = kas_price  # Le prix du KAS évolue chaque mois
     
@@ -169,21 +174,20 @@ def calculate_months(kas_amount, electricity_cost, kas_growth_factor, percentage
     while kas_amount > min_kas_threshold and months < max_months:
         months += 1
         
-        # 1. Déduire le coût de l'électricité en KAS (électricité convertie en KAS)
+        # 1. Calculer la quantité de KAS nécessaire pour payer l'électricité
         kas_needed_for_electricity = electricity_cost * percentage_conserved_factor / current_kas_price
         kas_amount -= kas_needed_for_electricity
         
-        # 2. Si le montant de KAS est inférieur au seuil, on arrête la boucle
+        # Vérifier si le montant restant de KAS est suffisant pour continuer
         if kas_amount <= min_kas_threshold:
             break
         
-        # 3. Réinvestir la partie restante du coût en KAS
-        # Ici, le montant de KAS acheté avec le réinvestissement doit être réduit à mesure que le prix du KAS augmente.
+        # 2. Calculer combien de KAS est acheté avec le réinvestissement
         kas_bought_with_reinvested_money = (electricity_cost * percentage_reinvested_factor) / current_kas_price
         kas_amount += kas_bought_with_reinvested_money
         
-        # 4. Augmenter le prix du KAS pour le mois suivant
-        current_kas_price *= kas_growth_factor  # Le KAS devient plus cher chaque mois
+        # 3. Augmenter le prix du KAS pour le mois suivant
+        current_kas_price *= kas_growth_factor
 
     return months
 
@@ -195,17 +199,3 @@ months_75 = calculate_months(initial_kas, electricity_cost_per_month, kas_growth
 st.write(f"Nombre de mois garantis si marge électrique 100% conservée : {months_100} mois")
 st.write(f"Nombre de mois garantis si marge électrique 75% conservée : {months_75} mois")
 
-
-# Appel de la fonction avec 2% et 3% pour comparer
-months_100_2percent = calculate_months(initial_kas, electricity_cost_per_month, 1.02, 100)
-months_100_3percent = calculate_months(initial_kas, electricity_cost_per_month, 1.03, 100)
-
-months_75_2percent = calculate_months(initial_kas, electricity_cost_per_month, 1.02, 75)
-months_75_3percent = calculate_months(initial_kas, electricity_cost_per_month, 1.03, 75)
-
-# Affichage des résultats
-st.write(f"Nombre de mois garantis si marge électrique 100% conservée (2% de croissance du KAS) : {months_100_2percent} mois")
-st.write(f"Nombre de mois garantis si marge électrique 100% conservée (3% de croissance du KAS) : {months_100_3percent} mois")
-
-st.write(f"Nombre de mois garantis si marge électrique 75% conservée (2% de croissance du KAS) : {months_75_2percent} mois")
-st.write(f"Nombre de mois garantis si marge électrique 75% conservée (3% de croissance du KAS) : {months_75_3percent} mois")
