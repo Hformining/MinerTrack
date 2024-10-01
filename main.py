@@ -109,7 +109,7 @@ initial_kas = market_price / kas_price
 kas_growth_factor = 1 + (kas_monthly_increase / 100)
 
 
-# Calcul des récompenses pour les 24 prochains mois
+# Calcul des récompenses pour les 24 prochains mois (précises par mois)
 rewards = []
 
 for i, row in df_filtered.iterrows():
@@ -125,18 +125,24 @@ for i, row in df_filtered.iterrows():
     # Calcul de la récompense en KAS pour ce mois
     reward = machine_share * total_kas
     
-    # Ajouter le résultat à la liste
+    # Ajouter le résultat à la liste des rewards
     rewards.append({
         "Month": month,
-        "Network Power (TH/s)": network_power,
-        "Total KAS Emitted": total_kas,
-        "Machine Share": machine_share,
         "Reward (KAS)": reward
     })
 
 # Créer un DataFrame pour afficher les résultats
-result_df = pd.DataFrame(rewards)
+result_df = pd.DataFrame({
+    "Month": df_filtered["Month"],
+    "Reward (KAS)": rewards
+})
 
+# Afficher les résultats
+st.write("Récompenses projetées sur 24 mois")
+st.dataframe(result_df)
+
+# Calculer la somme des récompenses sur 24 mois
+total_rewards = result_df['Reward (KAS)'].sum()
 
 # Fonction de calcul sans réinvestissement (en utilisant les rewards précises)
 def calculate_months_no_reinvestment(kas_amount, rewards, max_months=24, min_kas_threshold=0.01):
@@ -144,7 +150,7 @@ def calculate_months_no_reinvestment(kas_amount, rewards, max_months=24, min_kas
     for reward in rewards:
         if kas_amount <= min_kas_threshold or months >= max_months:
             break
-        kas_amount -= reward['Reward (KAS)']  # Déduire les rewards chaque mois (extraction correcte de la clé)
+        kas_amount -= reward['Reward (KAS)']  # Utilisation correcte des rewards en KAS
         months += 1
     return months
 
