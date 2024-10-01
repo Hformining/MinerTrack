@@ -213,6 +213,8 @@ def calculate_months(kas_amount, electricity_cost, kas_growth_factor, percentage
 
 # Calcul du nombre de mois garantis pour chaque scénario
 months_100 = calculate_months(initial_kas, electricity_cost_per_month, kas_growth_factor, 100)
+months_50 = calculate_months(initial_kas, electricity_cost_per_month, kas_growth_factor, 50)
 
 # Afficher les résultats pour les trois scénarios de conservation de la marge électrique
 st.write(f"Nombre de mois garantis si marge électrique 100% conservée : {months_100} mois")
+st.write(f"Nombre de mois garantis si marge électrique 50% conservée : {months_50} mois")
