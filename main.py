@@ -158,7 +158,7 @@ else:
     st.markdown(f"<span style='color:red'>Delta prix de vente optimal - bénéfice : **{delta_profit:,.2f} $**</span>", unsafe_allow_html=True)
 
 
-def calculate_months(kas_amount, electricity_cost, kas_growth_factor, percentage_conserved, max_months=24, min_kas_threshold=0.01):
+def calculate_months(kas_amount, electricity_cost, kas_growth_factor, percentage_conserved, max_months=240, min_kas_threshold=0.01):
     """
     Calcule le nombre de mois pendant lesquels il est possible de tenir avec la quantité initiale de KAS,
     en prenant en compte l'augmentation du prix du KAS et le réinvestissement.
@@ -191,7 +191,7 @@ def calculate_months(kas_amount, electricity_cost, kas_growth_factor, percentage
         current_kas_price *= kas_growth_factor  # Le KAS devient plus cher chaque mois
 
     return months
-    
+
 # Calcul du nombre de mois garantis pour chaque scénario
 months_100 = calculate_months(initial_kas, electricity_cost_per_month, kas_growth_factor, 100)
 months_75 = calculate_months(initial_kas, electricity_cost_per_month, kas_growth_factor, 75)
