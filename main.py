@@ -7,7 +7,7 @@ st.title("MinerTrack")
 # Champs de saisie pour les paramètres
 initial_network_power = st.number_input(
     "Puissance initiale du réseau (en TH/s)", 
-    value=1.1e6, 
+    value=1.1e6,  # 1.1 EH/s en TH/s
     step=1e5, 
     format="%.0f"
 )
@@ -19,16 +19,16 @@ machine_power = st.number_input(
     format="%.2f"
 )
 
-# Entrée pour la croissance mensuelle du réseau en GH/s
-network_growth_per_month_ghs = st.number_input(
-    "Croissance mensuelle du réseau (en GH/s)", 
-    value=100e6,  # Valeur par défaut 100 PH/s = 100 000 000 GH/s
-    step=1e6, 
-    format="%.0f"
+# Entrée pour la croissance mensuelle du réseau en PH/s
+network_growth_per_month_phs = st.number_input(
+    "Croissance mensuelle du réseau (en PH/s)", 
+    value=100.0,  # Valeur par défaut 100 PH/s
+    step=1.0, 
+    format="%.2f"
 )
 
-# Conversion de GH/s en TH/s pour les calculs
-network_growth_per_month = network_growth_per_month_ghs / 1e6
+# Conversion de PH/s en TH/s pour les calculs
+network_growth_per_month = network_growth_per_month_phs * 1e3  # 1 PH/s = 1000 TH/s
 
 # Données d'émission de KAS par mois
 data = {
