@@ -85,9 +85,6 @@ electricity_cost_per_month = power_consumption * 24 * 30 * electricity_price
 # Calcul du coût total de l'électricité sur 24 mois
 total_electricity_cost = electricity_cost_per_month * 24
 
-# Afficher le coût mensuel et le coût total d'électricité
-st.markdown(f"**Coût mensuel de l'électricité : {electricity_cost_per_month:,.2f} $ /mois**")
-st.markdown(f"**Marge de l'électricité sur 24 mois : {total_electricity_cost:,.2f} $**")
 
 # Calcul des récompenses pour les 24 prochains mois
 rewards = []
@@ -125,19 +122,24 @@ st.dataframe(result_df)
 total_rewards = result_df['Reward (KAS)'].sum()
 
 # Afficher la somme totale des récompenses avec séparateur de milliers et en gras
-st.markdown(f"**Somme totale des récompenses sur 24 mois : {total_rewards:,.2f} KAS**")
+st.markdown(f"Somme totale des récompenses sur 24 mois : **{total_rewards:,.2f} KAS**")
+
+
+# Afficher le coût mensuel et le coût total d'électricité
+st.markdown(f"Coût mensuel de l'électricité : **{electricity_cost_per_month:,.2f} $ /mois**")
+st.markdown(f"Marge de l'électricité sur 24 mois : **{total_electricity_cost:,.2f} $**")
 
 # Calcul : Production totale sur 24 mois en fonction du prix du KAS
 optimal_sale_price = total_rewards * kas_price
 
 # Afficher le prix de vente optimal de la machine avec séparateur de milliers et en gras
-st.markdown(f"**Prix de vente optimal de la machine : {optimal_sale_price:,.2f} $**")
+st.markdown(f"Prix de vente optimal de la machine : **{optimal_sale_price:,.2f} $**")
 
 # Calcul du Delta prix de vente - bénéfice
 delta_profit = optimal_sale_price - total_electricity_cost
 
 # Afficher le Delta prix de vente - bénéfice avec couleur (vert si positif, rouge si négatif)
 if delta_profit >= 0:
-    st.markdown(f"<span style='color:green'>**Delta prix de vente - bénéfice : {delta_profit:,.2f} $**</span>", unsafe_allow_html=True)
+    st.markdown(f"<span style='color:green'>Delta prix de vente - bénéfice : **{delta_profit:,.2f} $**</span>", unsafe_allow_html=True)
 else:
-    st.markdown(f"<span style='color:red'>**Delta prix de vente - bénéfice : {delta_profit:,.2f} $**</span>", unsafe_allow_html=True)
+    st.markdown(f"<span style='color:red'>Delta prix de vente - bénéfice : **{delta_profit:,.2f} $**</span>", unsafe_allow_html=True)
