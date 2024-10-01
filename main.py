@@ -100,21 +100,30 @@ initial_kas = market_price / kas_price
 kas_growth_factor = 1 + (kas_monthly_increase / 100)
 
 # Fonction pour calculer le nombre de mois garantis
-def calculate_months(kas_amount, electricity_cost, kas_growth_factor, percentage_conserved):
+def calculate_months(kas_amount, electricity_cost, kas_growth_factor, percentage_conserved, max_months=240, min_kas_threshold=0.01):
     months = 0
     current_kas_price = kas_price  # Le prix du KAS évolue chaque mois
-    while kas_amount > 0:
+    
+    # Calculer les pourcentages une seule fois pour éviter les recalculs dans la boucle
+    percentage_conserved_factor = percentage_conserved / 100
+    percentage_reinvested_factor = (100 - percentage_conserved) / 100
+
+    while kas_amount > min_kas_threshold and months < max_months:
         months += 1
-        # Coût à déduire en KAS pour l'électricité
-        kas_amount -= electricity_cost * (percentage_conserved / 100) / current_kas_price
-        if kas_amount < 0:  # Si le KAS est épuisé, sortir de la boucle
+        # Déduire le coût de l'électricité en KAS
+        kas_amount -= electricity_cost * percentage_conserved_factor / current_kas_price
+        
+        if kas_amount <= min_kas_threshold:  # Si le KAS restant est trop bas, arrêter
             break
-        # Réinvestissement du reste pour acheter plus de KAS
-        kas_amount += (electricity_cost * ((100 - percentage_conserved) / 100)) / current_kas_price
+        
+        # Réinvestir le reste du coût en KAS
+        kas_amount += electricity_cost * percentage_reinvested_factor / current_kas_price
+        
         # Augmenter le prix du KAS pour le mois suivant
         current_kas_price *= kas_growth_factor
-    return months
 
+    return months
+    
 # Calcul du nombre de mois garantis pour chaque scénario
 months_100 = calculate_months(initial_kas, electricity_cost_per_month, kas_growth_factor, 100)
 months_50 = calculate_months(initial_kas, electricity_cost_per_month, kas_growth_factor, 50)
