@@ -97,3 +97,5 @@ st.dataframe(result_df)
 # Calculer la somme des récompenses sur 24 mois
 total_rewards = result_df['Reward (KAS)'].sum()
 st.write(f"Somme totale des récompenses sur 24 mois : {total_rewards:.2f} KAS")
+# Afficher le coût mensuel d'électricité
+st.write(f"Coût mensuel de l'électricité : {electricity_cost_per_month:.2f} $ /mois")
