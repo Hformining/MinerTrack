@@ -45,6 +45,8 @@ machine_power = st.number_input(
     format="%.2f"
 )
 
+market_price = st.number_input("Prix actuel du marché (en $)", value=2000, step=100, format="%.0f")
+
 # Entrée pour la croissance mensuelle du réseau en PH/s
 network_growth_per_month_phs = st.number_input(
     "Croissance mensuelle du réseau (en PH/s)", 
@@ -79,12 +81,41 @@ kas_price = st.number_input(
     format="%.2f"
 )
 
+kas_monthly_increase = st.number_input("Pourcentage d'augmentation mensuel du KAS (en %)", value=2.0, step=0.1, format="%.2f")
+
 # Calcul du coût d'électricité mensuel (30 jours)
 electricity_cost_per_month = power_consumption * 24 * 30 * electricity_price
 
 # Calcul du coût total de l'électricité sur 24 mois
 total_electricity_cost = electricity_cost_per_month * 24
 
+
+# Calcul de la quantité initiale de KAS achetée avec le prix du marché
+initial_kas = market_price / kas_price
+
+# Pourcentage d'augmentation du prix du KAS converti en multiplicateur
+kas_growth_factor = 1 + (kas_monthly_increase / 100)
+
+# Fonction pour calculer le nombre de mois garantis
+def calculate_months(kas_amount, electricity_cost, kas_growth_factor, percentage_conserved):
+    months = 0
+    current_kas_price = kas_price  # Le prix du KAS évolue chaque mois
+    while kas_amount > 0:
+        months += 1
+        # Coût à déduire en KAS pour l'électricité
+        kas_amount -= electricity_cost * (percentage_conserved / 100) / current_kas_price
+        if kas_amount < 0:  # Si le KAS est épuisé, sortir de la boucle
+            break
+        # Réinvestissement du reste pour acheter plus de KAS
+        kas_amount += (electricity_cost * ((100 - percentage_conserved) / 100)) / current_kas_price
+        # Augmenter le prix du KAS pour le mois suivant
+        current_kas_price *= kas_growth_factor
+    return months
+
+# Calcul du nombre de mois garantis pour chaque scénario
+months_100 = calculate_months(initial_kas, electricity_cost_per_month, kas_growth_factor, 100)
+months_50 = calculate_months(initial_kas, electricity_cost_per_month, kas_growth_factor, 50)
+months_25 = calculate_months(initial_kas, electricity_cost_per_month, kas_growth_factor, 25)
 
 # Calcul des récompenses pour les 24 prochains mois
 rewards = []
@@ -143,3 +174,8 @@ if delta_profit >= 0:
     st.markdown(f"<span style='color:green'>Delta prix de vente optimal - bénéfice : **{delta_profit:,.2f} $**</span>", unsafe_allow_html=True)
 else:
     st.markdown(f"<span style='color:red'>Delta prix de vente optimal - bénéfice : **{delta_profit:,.2f} $**</span>", unsafe_allow_html=True)
+
+
+st.write(f"Nombre de mois garantis si marge électrique 100% conservée : {months_100} mois")
+st.write(f"Nombre de mois garantis si marge électrique 50% conservée : {months_50} mois")
+st.write(f"Nombre de mois garantis si marge électrique 25% conservée : {months_25} mois")
