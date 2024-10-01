@@ -123,11 +123,10 @@ def calculate_months(kas_amount, electricity_cost, kas_growth_factor, percentage
         current_kas_price *= kas_growth_factor
 
     return months
-    
+
 # Calcul du nombre de mois garantis pour chaque scénario
 months_100 = calculate_months(initial_kas, electricity_cost_per_month, kas_growth_factor, 100)
 months_50 = calculate_months(initial_kas, electricity_cost_per_month, kas_growth_factor, 50)
-months_25 = calculate_months(initial_kas, electricity_cost_per_month, kas_growth_factor, 25)
 
 # Calcul des récompenses pour les 24 prochains mois
 rewards = []
