@@ -102,13 +102,13 @@ st.dataframe(result_df)
 # Calculer la somme des récompenses sur 24 mois
 total_rewards = result_df['Reward (KAS)'].sum()
 # Afficher la somme totale des récompenses avec séparateur de milliers et en gras
-st.markdown(f"**Somme totale des récompenses sur 24 mois : {total_rewards:,.2f} KAS**")
+st.markdown(f"Somme totale des récompenses sur 24 mois : **{total_rewards:,.2f} KAS**")
 
 # Afficher le coût mensuel d'électricité avec séparateur de milliers et en gras
-st.markdown(f"**Coût mensuel de l'électricité : {electricity_cost_per_month:,.2f} $ /mois**")
+st.markdown(f"Coût mensuel de l'électricité : **{electricity_cost_per_month:,.2f} $ /mois**")
 
 # Calcul : Production totale sur 24 mois en fonction du prix du KAS
 optimal_sale_price = total_rewards * kas_price
 
 # Afficher le prix de vente optimal de la machine avec séparateur de milliers et en gras
-st.markdown(f"**Prix de vente optimal de la machine : {optimal_sale_price:,.2f} $**")
+st.markdown(f"Prix de vente optimal de la machine : **{optimal_sale_price:,.2f} $**")
