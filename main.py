@@ -30,6 +30,27 @@ network_growth_per_month_phs = st.number_input(
 # Conversion de PH/s en TH/s pour les calculs
 network_growth_per_month = network_growth_per_month_phs * 1e3  # 1 PH/s = 1000 TH/s
 
+# Nouveau : Champs pour la consommation électrique et le prix de l'électricité
+power_consumption = st.number_input(
+    "Consommation électrique de la machine (en kW/h)", 
+    value=3.5,  # Valeur par défaut
+    step=0.1, 
+    format="%.2f"
+)
+
+electricity_price = st.number_input(
+    "Prix de l'électricité (en $/kW)", 
+    value=0.05,  # Valeur par défaut
+    step=0.01, 
+    format="%.2f"
+)
+
+# Calcul du coût d'électricité mensuel (30 jours)
+electricity_cost_per_month = power_consumption * 24 * 30 * electricity_price
+
+# Afficher le coût mensuel d'électricité
+st.write(f"Coût mensuel de l'électricité : {electricity_cost_per_month:.2f} $ /mois")
+
 # Données d'émission de KAS par mois
 data = {
     "Month": [36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59],
