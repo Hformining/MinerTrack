@@ -158,7 +158,7 @@ else:
     st.markdown(f"<span style='color:red'>Delta prix de vente optimal - bénéfice : **{delta_profit:,.2f} $**</span>", unsafe_allow_html=True)
 
 
-def calculate_months(kas_amount, electricity_cost, kas_growth_factor, percentage_conserved, max_months=300, min_kas_threshold=0.01):
+def calculate_months(kas_amount, electricity_cost, kas_growth_factor, percentage_conserved, max_months=24, min_kas_threshold=0.01):
     months = 0
     current_kas_price = kas_price  # Le prix du KAS évolue chaque mois
     
@@ -168,17 +168,17 @@ def calculate_months(kas_amount, electricity_cost, kas_growth_factor, percentage
 
     while kas_amount > min_kas_threshold and months < max_months:
         months += 1
-        # Déduire le coût de l'électricité en KAS
+        # Déduire le coût de l'électricité en KAS (électricité convertie en KAS)
         kas_amount -= electricity_cost * percentage_conserved_factor / current_kas_price
         
         if kas_amount <= min_kas_threshold:  # Si le KAS restant est trop bas, arrêter
             break
         
-        # Réinvestir le reste du coût en KAS
-        kas_amount += electricity_cost * percentage_reinvested_factor / current_kas_price
+        # Réinvestir le reste du coût en KAS (on peut acheter moins de KAS chaque mois si le KAS augmente)
+        kas_amount += (electricity_cost * percentage_reinvested_factor) / current_kas_price
         
         # Augmenter le prix du KAS pour le mois suivant
-        current_kas_price *= kas_growth_factor
+        current_kas_price *= kas_growth_factor  # Le KAS devient plus cher chaque mois
 
     return months
 
