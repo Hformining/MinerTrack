@@ -99,33 +99,6 @@ initial_kas = market_price / kas_price
 # Pourcentage d'augmentation du prix du KAS converti en multiplicateur
 kas_growth_factor = 1 + (kas_monthly_increase / 100)
 
-def calculate_months(kas_amount, electricity_cost, kas_growth_factor, percentage_conserved, max_months=48, min_kas_threshold=0.01):
-    months = 0
-    current_kas_price = kas_price  # Le prix du KAS évolue chaque mois
-    
-    # Calculer les pourcentages une seule fois pour éviter les recalculs dans la boucle
-    percentage_conserved_factor = percentage_conserved / 100
-    percentage_reinvested_factor = (100 - percentage_conserved) / 100
-
-    while kas_amount > min_kas_threshold and months < max_months:
-        months += 1
-        # Déduire le coût de l'électricité en KAS
-        kas_amount -= electricity_cost * percentage_conserved_factor / current_kas_price
-        
-        if kas_amount <= min_kas_threshold:  # Si le KAS restant est trop bas, arrêter
-            break
-        
-        # Réinvestir le reste du coût en KAS
-        kas_amount += electricity_cost * percentage_reinvested_factor / current_kas_price
-        
-        # Augmenter le prix du KAS pour le mois suivant
-        current_kas_price *= kas_growth_factor
-
-    return months
-
-# Calcul du nombre de mois garantis pour chaque scénario
-months_100 = calculate_months(initial_kas, electricity_cost_per_month, kas_growth_factor, 100)
-months_50 = calculate_months(initial_kas, electricity_cost_per_month, kas_growth_factor, 50)
 
 # Calcul des récompenses pour les 24 prochains mois
 rewards = []
@@ -183,6 +156,34 @@ if delta_profit >= 0:
     st.markdown(f"<span style='color:green'>Delta prix de vente optimal - bénéfice : **{delta_profit:,.2f} $**</span>", unsafe_allow_html=True)
 else:
     st.markdown(f"<span style='color:red'>Delta prix de vente optimal - bénéfice : **{delta_profit:,.2f} $**</span>", unsafe_allow_html=True)
+
+def calculate_months(kas_amount, electricity_cost, kas_growth_factor, percentage_conserved, max_months=48, min_kas_threshold=0.01):
+    months = 0
+    current_kas_price = kas_price  # Le prix du KAS évolue chaque mois
+    
+    # Calculer les pourcentages une seule fois pour éviter les recalculs dans la boucle
+    percentage_conserved_factor = percentage_conserved / 100
+    percentage_reinvested_factor = (100 - percentage_conserved) / 100
+
+    while kas_amount > min_kas_threshold and months < max_months:
+        months += 1
+        # Déduire le coût de l'électricité en KAS
+        kas_amount -= electricity_cost * percentage_conserved_factor / current_kas_price
+        
+        if kas_amount <= min_kas_threshold:  # Si le KAS restant est trop bas, arrêter
+            break
+        
+        # Réinvestir le reste du coût en KAS
+        kas_amount += electricity_cost * percentage_reinvested_factor / current_kas_price
+        
+        # Augmenter le prix du KAS pour le mois suivant
+        current_kas_price *= kas_growth_factor
+
+    return months
+
+# Calcul du nombre de mois garantis pour chaque scénario
+months_100 = calculate_months(initial_kas, electricity_cost_per_month, kas_growth_factor, 100)
+months_50 = calculate_months(initial_kas, electricity_cost_per_month, kas_growth_factor, 50)
 
 # Afficher les résultats pour les trois scénarios de conservation de la marge électrique
 st.write(f"Nombre de mois garantis si marge électrique 100% conservée : {months_100} mois")
