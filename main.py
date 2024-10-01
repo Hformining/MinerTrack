@@ -96,19 +96,6 @@ initial_kas_amount = market_price / kas_price  # $2000 ÷ prix du KAS
 # Conversion du pourcentage d'augmentation du KAS en un facteur multiplicatif
 kas_growth_factor = 1 + (kas_monthly_increase / 100)
 
-# Calcul du coût d'électricité mensuel (30 jours)
-electricity_cost_per_month = power_consumption * 24 * 30 * electricity_price
-
-# Calcul du coût total de l'électricité sur 24 mois
-total_electricity_cost = electricity_cost_per_month * 24
-
-# Calcul de la quantité initiale de KAS achetée avec le prix du marché
-initial_kas = market_price / kas_price
-
-# Pourcentage d'augmentation du prix du KAS converti en multiplicateur
-kas_growth_factor = 1 + (kas_monthly_increase / 100)
-
-
 # Calcul des récompenses pour les 24 prochains mois (précises par mois)
 rewards = []
 
@@ -144,11 +131,10 @@ total_rewards = result_df['Reward (KAS)'].sum()
 # Afficher la somme totale des récompenses avec séparateur de milliers et en gras
 st.markdown(f"Somme totale des récompenses sur 24 mois : **{total_rewards:,.2f} KAS**")
 
-
 # Fonction de calcul sans réinvestissement (en utilisant les rewards précises)
 def calculate_months_no_reinvestment(kas_amount, rewards, max_months=24, min_kas_threshold=0.01):
     months = 0
-    for reward in rewards:  # 'reward' est directement une valeur float, pas un dictionnaire
+    for reward in rewards:  # 'reward' est directement une valeur float
         if kas_amount <= min_kas_threshold or months >= max_months:
             break
         kas_amount -= reward  # Déduire directement la valeur de reward (en KAS)
@@ -159,7 +145,7 @@ def calculate_months_no_reinvestment(kas_amount, rewards, max_months=24, min_kas
 def calculate_months_with_reinvestment(kas_amount, rewards, electricity_cost, kas_growth_factor, kas_price, reinvest_percentage=0.5, max_months=24, min_kas_threshold=0.01):
     months = 0
     current_kas_price = kas_price  # Prix initial du KAS
-    for reward in rewards:  # 'reward' est directement une valeur float, pas un dictionnaire
+    for reward in rewards:  # 'reward' est directement une valeur float
         if kas_amount <= min_kas_threshold or months >= max_months:
             break
         
@@ -176,50 +162,13 @@ def calculate_months_with_reinvestment(kas_amount, rewards, electricity_cost, ka
         months += 1
     
     return months
-    
+
 # Calcul sans réinvestissement
 months_no_reinvestment = calculate_months_no_reinvestment(initial_kas_amount, rewards)
 
 # Calcul avec réinvestissement
 months_with_reinvestment = calculate_months_with_reinvestment(initial_kas_amount, rewards, electricity_cost_per_month, kas_growth_factor, kas_price)
 
-# Afficher les résultats
-st.write("Récompenses projetées sur 24 mois")
-st.dataframe(result_df)
-
-# Calculer la somme des récompenses sur 24 mois
-total_rewards = result_df['Reward (KAS)'].sum()
-
-# Afficher la somme totale des récompenses avec séparateur de milliers et en gras
-st.markdown(f"Somme totale des récompenses sur 24 mois : **{total_rewards:,.2f} KAS**")
-
-# Afficher le coût mensuel et le coût total d'électricité
-st.markdown(f"Coût mensuel de l'électricité : **{electricity_cost_per_month:,.2f} $ /mois**")
-st.markdown(f"Marge de l'électricité sur 24 mois : **{total_electricity_cost:,.2f} $**")
-
-# Calcul : Production totale sur 24 mois en fonction du prix du KAS
-optimal_sale_price = total_rewards * kas_price
-
-# Afficher le prix de vente optimal de la machine avec séparateur de milliers et en gras
-st.markdown(f"Prix de vente optimal de la machine : **{optimal_sale_price:,.2f} $**")
-
-# Calcul du Delta prix de vente - bénéfice
-delta_profit = optimal_sale_price - total_electricity_cost
-
-# Afficher le Delta prix de vente - bénéfice avec couleur (vert si positif, rouge si négatif)
-if delta_profit >= 0:
-    st.markdown(f"<span style='color:green'>Delta prix de vente optimal - bénéfice : **{delta_profit:,.2f} $**</span>", unsafe_allow_html=True)
-else:
-    st.markdown(f"<span style='color:red'>Delta prix de vente optimal - bénéfice : **{delta_profit:,.2f} $**</span>", unsafe_allow_html=True)
-
-
-# Calcul sans réinvestissement
-months_no_reinvestment = calculate_months_no_reinvestment(initial_kas_amount, rewards_per_month)
-
-# Calcul avec réinvestissement
-months_with_reinvestment = calculate_months_with_reinvestment(initial_kas_amount, rewards_per_month, electricity_cost_per_month, kas_growth_factor, kas_price)
-
 # Affichage des résultats
 st.write(f"Nombre de mois garantis sans réinvestissement : {months_no_reinvestment} mois")
 st.write(f"Nombre de mois garantis avec réinvestissement de 50% du coût d'électricité : {months_with_reinvestment} mois")
-
