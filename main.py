@@ -219,5 +219,5 @@ else:
 
 # Affichage des résultats
 st.write(f"Nombre de mois garantis sans réinvestissement : {months_no_reinvestment} mois")
-st.write(f"Nombre de mois garantis avec réinvestissement de 50% du coût d'électricité : {months_with_reinvestment} mois")
+st.write(f"Nombre de mois garantis avec réinvestissement de 50% du coût d'électricité : {months_with_50_percent_reinvestment} mois")
 st.write(f"Nombre de mois garantis avec réinvestissement de 75% du coût d'électricité : {months_with_75_percent_reinvestment} mois")
