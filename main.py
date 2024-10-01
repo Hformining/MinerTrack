@@ -89,7 +89,6 @@ electricity_cost_per_month = power_consumption * 24 * 30 * electricity_price
 # Calcul du coût total de l'électricité sur 24 mois
 total_electricity_cost = electricity_cost_per_month * 24
 
-
 # Calcul de la quantité initiale de KAS achetée avec le prix du marché
 initial_kas = market_price / kas_price
 
@@ -155,7 +154,6 @@ total_rewards = result_df['Reward (KAS)'].sum()
 # Afficher la somme totale des récompenses avec séparateur de milliers et en gras
 st.markdown(f"Somme totale des récompenses sur 24 mois : **{total_rewards:,.2f} KAS**")
 
-
 # Afficher le coût mensuel et le coût total d'électricité
 st.markdown(f"Coût mensuel de l'électricité : **{electricity_cost_per_month:,.2f} $ /mois**")
 st.markdown(f"Marge de l'électricité sur 24 mois : **{total_electricity_cost:,.2f} $**")
@@ -175,7 +173,7 @@ if delta_profit >= 0:
 else:
     st.markdown(f"<span style='color:red'>Delta prix de vente optimal - bénéfice : **{delta_profit:,.2f} $**</span>", unsafe_allow_html=True)
 
-
+# Afficher les résultats pour les trois scénarios de conservation de la marge électrique
 st.write(f"Nombre de mois garantis si marge électrique 100% conservée : {months_100} mois")
 st.write(f"Nombre de mois garantis si marge électrique 50% conservée : {months_50} mois")
 st.write(f"Nombre de mois garantis si marge électrique 25% conservée : {months_25} mois")
