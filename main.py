@@ -158,7 +158,7 @@ else:
     st.markdown(f"<span style='color:red'>Delta prix de vente optimal - bénéfice : **{delta_profit:,.2f} $**</span>", unsafe_allow_html=True)
 
 
-def calculate_months(kas_amount, electricity_cost, kas_growth_factor, percentage_conserved, max_months=48, min_kas_threshold=0.01):
+def calculate_months(kas_amount, electricity_cost, kas_growth_factor, percentage_conserved, max_months=60, min_kas_threshold=0.01):
     months = 0
     current_kas_price = kas_price  # Le prix du KAS évolue chaque mois
     
