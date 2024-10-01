@@ -140,6 +140,6 @@ delta_profit = optimal_sale_price - total_electricity_cost
 
 # Afficher le Delta prix de vente - bénéfice avec couleur (vert si positif, rouge si négatif)
 if delta_profit >= 0:
-    st.markdown(f"<span style='color:green'>Delta prix de vente - bénéfice : **{delta_profit:,.2f} $**</span>", unsafe_allow_html=True)
+    st.markdown(f"<span style='color:green'>Delta prix de vente optimal - bénéfice : **{delta_profit:,.2f} $**</span>", unsafe_allow_html=True)
 else:
-    st.markdown(f"<span style='color:red'>Delta prix de vente - bénéfice : **{delta_profit:,.2f} $**</span>", unsafe_allow_html=True)
+    st.markdown(f"<span style='color:red'>Delta prix de vente optimal - bénéfice : **{delta_profit:,.2f} $**</span>", unsafe_allow_html=True)
