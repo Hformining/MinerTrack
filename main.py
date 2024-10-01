@@ -194,3 +194,18 @@ months_75 = calculate_months(initial_kas, electricity_cost_per_month, kas_growth
 # Afficher les résultats pour les trois scénarios de conservation de la marge électrique
 st.write(f"Nombre de mois garantis si marge électrique 100% conservée : {months_100} mois")
 st.write(f"Nombre de mois garantis si marge électrique 75% conservée : {months_75} mois")
+
+
+# Appel de la fonction avec 2% et 3% pour comparer
+months_100_2percent = calculate_months(initial_kas, electricity_cost_per_month, 1.02, 100)
+months_100_3percent = calculate_months(initial_kas, electricity_cost_per_month, 1.03, 100)
+
+months_75_2percent = calculate_months(initial_kas, electricity_cost_per_month, 1.02, 75)
+months_75_3percent = calculate_months(initial_kas, electricity_cost_per_month, 1.03, 75)
+
+# Affichage des résultats
+st.write(f"Nombre de mois garantis si marge électrique 100% conservée (2% de croissance du KAS) : {months_100_2percent} mois")
+st.write(f"Nombre de mois garantis si marge électrique 100% conservée (3% de croissance du KAS) : {months_100_3percent} mois")
+
+st.write(f"Nombre de mois garantis si marge électrique 75% conservée (2% de croissance du KAS) : {months_75_2percent} mois")
+st.write(f"Nombre de mois garantis si marge électrique 75% conservée (3% de croissance du KAS) : {months_75_3percent} mois")
