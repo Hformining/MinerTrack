@@ -56,9 +56,6 @@ kas_price = st.number_input(
 # Calcul du coût d'électricité mensuel (30 jours)
 electricity_cost_per_month = power_consumption * 24 * 30 * electricity_price
 
-# Afficher le coût mensuel d'électricité
-st.write(f"Coût mensuel de l'électricité : {electricity_cost_per_month:.2f} $ /mois")
-
 # Données d'émission de KAS par mois
 data = {
     "Month": [36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59],
@@ -105,6 +102,9 @@ st.dataframe(result_df)
 # Calculer la somme des récompenses sur 24 mois
 total_rewards = result_df['Reward (KAS)'].sum()
 st.write(f"Somme totale des récompenses sur 24 mois : {total_rewards:.2f} KAS")
+
+# Afficher le coût mensuel d'électricité
+st.write(f"Coût mensuel de l'électricité : {electricity_cost_per_month:.2f} $ /mois")
 
 # Nouveau calcul : Production totale sur 24 mois en fonction du prix du KAS
 optimal_sale_price = total_rewards * kas_price
