@@ -163,7 +163,6 @@ def calculate_months(kas_amount, electricity_cost, kas_growth_factor, percentage
     Calcule le nombre de mois pendant lesquels il est possible de tenir avec la quantité initiale de KAS,
     en prenant en compte l'augmentation du prix du KAS et le réinvestissement.
     """
-    
     months = 0
     current_kas_price = kas_price  # Le prix du KAS évolue chaque mois
     
@@ -171,6 +170,13 @@ def calculate_months(kas_amount, electricity_cost, kas_growth_factor, percentage
     percentage_conserved_factor = percentage_conserved / 100
     percentage_reinvested_factor = (100 - percentage_conserved) / 100
 
+    # Ajout de la trace pour suivre les valeurs de départ
+    print(f"\n[TRACE] -- DÉBUT DU CALCUL --\n")
+    print(f"Quantité initiale de KAS: {kas_amount}")
+    print(f"Coût d'électricité mensuel: {electricity_cost} $")
+    print(f"Prix initial du KAS: {current_kas_price} $/KAS")
+    print(f"Croissance du prix du KAS: {kas_growth_factor * 100 - 100}% par mois")
+    
     while kas_amount > min_kas_threshold and months < max_months:
         months += 1
         
@@ -178,17 +184,31 @@ def calculate_months(kas_amount, electricity_cost, kas_growth_factor, percentage
         kas_needed_for_electricity = electricity_cost * percentage_conserved_factor / current_kas_price
         kas_amount -= kas_needed_for_electricity
         
+        # Ajout de la trace pour suivre l'évolution après déduction du coût d'électricité
+        print(f"\n[MOIS {months}]")
+        print(f"Prix du KAS: {current_kas_price}")
+        print(f"KAS nécessaire pour l'électricité: {kas_needed_for_electricity}")
+        print(f"KAS restant après paiement de l'électricité: {kas_amount}")
+
         # Vérifier si le montant restant de KAS est suffisant pour continuer
         if kas_amount <= min_kas_threshold:
+            print(f"[MOIS {months}] -- KAS épuisé.")
             break
         
         # 2. Calculer combien de KAS est acheté avec le réinvestissement
         kas_bought_with_reinvested_money = (electricity_cost * percentage_reinvested_factor) / current_kas_price
         kas_amount += kas_bought_with_reinvested_money
         
+        # Ajout de la trace pour suivre l'évolution après réinvestissement
+        print(f"KAS acheté avec réinvestissement: {kas_bought_with_reinvested_money}")
+        print(f"KAS restant après réinvestissement: {kas_amount}")
+        
         # 3. Augmenter le prix du KAS pour le mois suivant
-        current_kas_price *= kas_growth_factor
+        current_kas_price *= kas_growth_factor  # Le KAS devient plus cher chaque mois
 
+    print(f"\n[TRACE] -- FIN DU CALCUL --\n")
+    print(f"Nombre de mois garantis: {months}")
+    
     return months
 
 # Calcul du nombre de mois garantis pour chaque scénario
