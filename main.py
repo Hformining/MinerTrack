@@ -99,8 +99,7 @@ initial_kas = market_price / kas_price
 # Pourcentage d'augmentation du prix du KAS converti en multiplicateur
 kas_growth_factor = 1 + (kas_monthly_increase / 100)
 
-# Fonction pour calculer le nombre de mois garantis
-def calculate_months(kas_amount, electricity_cost, kas_growth_factor, percentage_conserved, max_months=240, min_kas_threshold=0.01):
+def calculate_months(kas_amount, electricity_cost, kas_growth_factor, percentage_conserved, max_months=24, min_kas_threshold=0.01):
     months = 0
     current_kas_price = kas_price  # Le prix du KAS évolue chaque mois
     
