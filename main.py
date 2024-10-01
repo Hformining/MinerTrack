@@ -145,7 +145,7 @@ def calculate_months_no_reinvestment(kas_amount, rewards, max_months=24, min_kas
     return months
 
 # Fonction de calcul avec réinvestissement (en utilisant les rewards précises)
-def calculate_months_with_reinvestment(kas_amount, rewards, electricity_cost, kas_growth_factor, kas_price, reinvest_percentage=0.5, max_months=24, min_kas_threshold=0.01):
+def calculate_months_with_reinvestment(kas_amount, rewards, electricity_cost, kas_growth_factor, kas_price, reinvest_percentage=0.5, max_months=240, min_kas_threshold=0.01):
     months = 0
     current_kas_price = kas_price  # Prix initial du KAS
     for reward in rewards:  # 'reward' est directement une valeur float
