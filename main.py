@@ -169,20 +169,20 @@ def calculate_months(kas_amount, electricity_cost, kas_growth_factor, percentage
     while kas_amount > min_kas_threshold and months < max_months:
         months += 1
         
-        # Déduire le coût de l'électricité en KAS (électricité convertie en KAS)
+        # 1. Déduire le coût de l'électricité en KAS (électricité convertie en KAS)
         kas_needed_for_electricity = electricity_cost * percentage_conserved_factor / current_kas_price
         kas_amount -= kas_needed_for_electricity
         
-        # Si le montant de KAS est inférieur au seuil, on arrête la boucle
+        # 2. Si le montant de KAS est inférieur au seuil, on arrête la boucle
         if kas_amount <= min_kas_threshold:
             break
         
-        # Réinvestir la partie restante du coût en KAS (acheter moins de KAS avec la croissance du prix du KAS)
-        # Ajout important : lorsque le KAS augmente, tu pourras acheter moins de KAS avec le même montant en $.
+        # 3. Réinvestir la partie restante du coût en KAS
+        # Ici, le montant de KAS acheté avec le réinvestissement doit être réduit à mesure que le prix du KAS augmente.
         kas_bought_with_reinvested_money = (electricity_cost * percentage_reinvested_factor) / current_kas_price
         kas_amount += kas_bought_with_reinvested_money
         
-        # Augmenter le prix du KAS pour le mois suivant
+        # 4. Augmenter le prix du KAS pour le mois suivant
         current_kas_price *= kas_growth_factor  # Le KAS devient plus cher chaque mois
 
     return months
