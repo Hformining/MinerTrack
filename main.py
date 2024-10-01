@@ -144,7 +144,7 @@ def calculate_months_no_reinvestment(kas_amount, rewards, max_months=24, min_kas
     for reward in rewards:
         if kas_amount <= min_kas_threshold or months >= max_months:
             break
-        kas_amount -= reward  # Déduire les rewards chaque mois
+        kas_amount -= reward['Reward (KAS)']  # Déduire les rewards chaque mois (extraction correcte de la clé)
         months += 1
     return months
 
@@ -160,8 +160,8 @@ def calculate_months_with_reinvestment(kas_amount, rewards, electricity_cost, ka
         kas_bought_with_reinvestment = (electricity_cost * reinvest_percentage) / current_kas_price
         kas_amount += kas_bought_with_reinvestment
         
-        # Déduire les rewards de KAS pour ce mois
-        kas_amount -= reward
+        # Déduire les rewards de KAS pour ce mois (extraction correcte de la clé)
+        kas_amount -= reward['Reward (KAS)']
         
         # Augmenter le prix du KAS pour le mois suivant
         current_kas_price *= kas_growth_factor
