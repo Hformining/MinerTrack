@@ -19,12 +19,16 @@ machine_power = st.number_input(
     format="%.2f"
 )
 
-network_growth_per_month = st.number_input(
-    "Croissance mensuelle du réseau (en TH/s)", 
-    value=100e3, 
-    step=1e3, 
+# Entrée pour la croissance mensuelle du réseau en GH/s
+network_growth_per_month_ghs = st.number_input(
+    "Croissance mensuelle du réseau (en GH/s)", 
+    value=100e6,  # Valeur par défaut 100 PH/s = 100 000 000 GH/s
+    step=1e6, 
     format="%.0f"
 )
+
+# Conversion de GH/s en TH/s pour les calculs
+network_growth_per_month = network_growth_per_month_ghs / 1e6
 
 # Données d'émission de KAS par mois
 data = {
