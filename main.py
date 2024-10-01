@@ -125,24 +125,25 @@ for i, row in df_filtered.iterrows():
     # Calcul de la récompense en KAS pour ce mois
     reward = machine_share * total_kas
     
-    # Ajouter le résultat à la liste des rewards
-    rewards.append({
-        "Month": month,
-        "Reward (KAS)": reward
-    })
+    # Ajouter uniquement la valeur des rewards à la liste
+    rewards.append(reward)
 
-# Créer un DataFrame pour afficher les résultats
+# Créer un DataFrame avec les valeurs des rewards uniquement
 result_df = pd.DataFrame({
     "Month": df_filtered["Month"],
-    "Reward (KAS)": rewards
+    "Reward (KAS)": rewards  # Utilisation directe des rewards en float
 })
 
 # Afficher les résultats
 st.write("Récompenses projetées sur 24 mois")
 st.dataframe(result_df)
 
-# Calculer la somme des récompenses sur 24 mois
+# Calculer la somme des récompenses sur 24 mois (cela devrait fonctionner maintenant)
 total_rewards = result_df['Reward (KAS)'].sum()
+
+# Afficher la somme totale des récompenses avec séparateur de milliers et en gras
+st.markdown(f"Somme totale des récompenses sur 24 mois : **{total_rewards:,.2f} KAS**")
+
 
 # Fonction de calcul sans réinvestissement (en utilisant les rewards précises)
 def calculate_months_no_reinvestment(kas_amount, rewards, max_months=24, min_kas_threshold=0.01):
