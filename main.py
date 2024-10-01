@@ -77,9 +77,6 @@ kas_price = st.number_input(
 # Calcul du coût d'électricité mensuel (30 jours)
 electricity_cost_per_month = power_consumption * 24 * 30 * electricity_price
 
-# Afficher le coût mensuel d'électricité avec séparateur de milliers et en gras
-st.markdown(f"**Coût mensuel de l'électricité : {electricity_cost_per_month:,.2f} $ /mois**")
-
 # Calcul des récompenses pour les 24 prochains mois
 rewards = []
 
