@@ -158,7 +158,7 @@ else:
     st.markdown(f"<span style='color:red'>Delta prix de vente optimal - bénéfice : **{delta_profit:,.2f} $**</span>", unsafe_allow_html=True)
 
 
-def calculate_months(kas_amount, electricity_cost, kas_growth_factor, percentage_conserved, max_months=60, min_kas_threshold=0.01):
+def calculate_months(kas_amount, electricity_cost, kas_growth_factor, percentage_conserved, max_months=240, min_kas_threshold=0.01):
     months = 0
     current_kas_price = kas_price  # Le prix du KAS évolue chaque mois
     
@@ -184,8 +184,10 @@ def calculate_months(kas_amount, electricity_cost, kas_growth_factor, percentage
 
 # Calcul du nombre de mois garantis pour chaque scénario
 months_100 = calculate_months(initial_kas, electricity_cost_per_month, kas_growth_factor, 100)
+months_75 = calculate_months(initial_kas, electricity_cost_per_month, kas_growth_factor, 75)
 months_50 = calculate_months(initial_kas, electricity_cost_per_month, kas_growth_factor, 50)
 
 # Afficher les résultats pour les trois scénarios de conservation de la marge électrique
 st.write(f"Nombre de mois garantis si marge électrique 100% conservée : {months_100} mois")
+st.write(f"Nombre de mois garantis si marge électrique 75% conservée : {months_75} mois")
 st.write(f"Nombre de mois garantis si marge électrique 50% conservée : {months_50} mois")
