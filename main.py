@@ -1,8 +1,29 @@
 import streamlit as st
 import pandas as pd
+from datetime import datetime
 
 # Titre de l'application
 st.title("MinerTrack")
+
+# Obtenir la date actuelle
+current_date = datetime.now()
+current_month = (current_date.year - 2024) * 12 + (current_date.month - 10) + 36  # Calculer le mois correspondant
+
+# Liste complète des données d'émission de KAS
+data = {
+    "Month": list(range(36, 87)),
+    "Total KAS Emitted": [216713637, 204550435, 193069902, 182233721, 172005728, 162351788, 153239683, 144639000,
+                          136521037, 128858700, 121626417, 114800050, 108356819, 102275218, 96534951, 91116860,
+                          86002864, 81175894, 76619841, 72319500, 68260518, 64429350, 60813208, 57140025,
+                          54178409, 51137609, 48267475, 45558430, 43001432, 40587947, 38309921, 36159750,
+                          34130259, 32214675, 30406604, 28700013, 27089205, 25568804, 24133738, 22779215,
+                          21500716, 20293974, 19154960, 18079875, 17065130, 16107337, 15203302, 14350006,
+                          13544602, 12784402, 12066869],
+}
+
+# Créer un DataFrame pour les données d'émission et filtrer à partir du mois courant
+df = pd.DataFrame(data)
+df_filtered = df[df["Month"] >= current_month].head(24)  # Sélectionner les 24 prochains mois
 
 # Champs de saisie pour les paramètres
 initial_network_power = st.number_input(
@@ -56,21 +77,13 @@ kas_price = st.number_input(
 # Calcul du coût d'électricité mensuel (30 jours)
 electricity_cost_per_month = power_consumption * 24 * 30 * electricity_price
 
-# Données d'émission de KAS par mois
-data = {
-    "Month": [36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59],
-    "Total KAS Emitted": [216713637, 204550435, 193069902, 182233721, 172005728, 162351788, 153239683, 144639000, 
-                          136521037, 128858700, 121626417, 114800050, 108356819, 102275218, 96534951, 91116860, 
-                          86002864, 81175894, 76619841, 72319500, 68260518, 64429350, 60813208, 57140025]
-}
-
-# Créer un DataFrame pour les données d'émission
-df = pd.DataFrame(data)
+# Afficher le coût mensuel d'électricité avec séparateur de milliers et en gras
+st.markdown(f"**Coût mensuel de l'électricité : {electricity_cost_per_month:,.2f} $ /mois**")
 
 # Calcul des récompenses pour les 24 prochains mois
 rewards = []
 
-for i, row in df.iterrows():
+for i, row in df_filtered.iterrows():
     month = row['Month']
     total_kas = row['Total KAS Emitted']
     
