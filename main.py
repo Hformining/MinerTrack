@@ -46,9 +46,9 @@ machine_power = st.number_input(
 )
 
 market_price = st.number_input(
-	"Prix actuel du marché (en $)", 
-	value=2000, 
-	step=100
+    "Prix actuel du marché (en $)", 
+    value=2000, 
+    step=100
 )
 
 # Entrée pour la croissance mensuelle du réseau en PH/s
@@ -86,6 +86,51 @@ kas_price = st.number_input(
 )
 
 kas_monthly_increase = st.number_input("Pourcentage d'augmentation mensuel du KAS (en %)", value=2.0, step=0.1, format="%.2f")
+
+# Calculer le coût d'électricité mensuel
+electricity_cost_per_month = power_consumption * 24 * 30 * electricity_price  # 24 heures/jour, 30 jours/mois
+
+# Calculer le nombre de KAS pouvant être acheté avec le prix actuel du marché
+initial_kas_amount = market_price / kas_price  # $2000 ÷ prix du KAS
+
+# Conversion du pourcentage d'augmentation du KAS en un facteur multiplicatif
+kas_growth_factor = 1 + (kas_monthly_increase / 100)
+
+# Rewards mensuels à calculer à partir de la puissance de la machine (exemple simple ici)
+# A ajuster avec un calcul des rewards propre à ta situation
+rewards_per_month = (machine_power / initial_network_power) * 100  # Ex. proportion des rewards
+
+# Fonction de calcul sans réinvestissement
+def calculate_months_no_reinvestment(kas_amount, rewards_per_month, max_months=24, min_kas_threshold=0.01):
+    months = 0
+    while kas_amount > min_kas_threshold and months < max_months:
+        months += 1
+        kas_amount -= rewards_per_month  # Déduire les rewards chaque mois
+        if kas_amount <= min_kas_threshold:
+            break
+    return months
+
+# Fonction de calcul avec réinvestissement de 50% du coût de l'électricité
+def calculate_months_with_reinvestment(kas_amount, rewards_per_month, electricity_cost, kas_growth_factor, kas_price, reinvest_percentage=0.5, max_months=24, min_kas_threshold=0.01):
+    months = 0
+    current_kas_price = kas_price  # Prix initial du KAS
+    while kas_amount > min_kas_threshold and months < max_months:
+        months += 1
+        
+        # Réinvestir 50% du coût de l'électricité pour acheter du KAS
+        kas_bought_with_reinvestment = (electricity_cost * reinvest_percentage) / current_kas_price
+        kas_amount += kas_bought_with_reinvestment
+        
+        # Déduire les rewards de KAS pour ce mois
+        kas_amount -= rewards_per_month
+        
+        # Augmenter le prix du KAS pour le mois suivant
+        current_kas_price *= kas_growth_factor
+        
+        if kas_amount <= min_kas_threshold:
+            break
+    
+    return months
 
 # Calcul du coût d'électricité mensuel (30 jours)
 electricity_cost_per_month = power_consumption * 24 * 30 * electricity_price
@@ -158,50 +203,6 @@ else:
     st.markdown(f"<span style='color:red'>Delta prix de vente optimal - bénéfice : **{delta_profit:,.2f} $**</span>", unsafe_allow_html=True)
 
 
-def calculate_months_no_reinvestment(kas_amount, rewards_per_month, max_months=24, min_kas_threshold=0.01):
-    """
-    Calcule le nombre de mois pendant lesquels il est possible de tenir sans réinvestissement
-    avec un stock initial de KAS, en déduisant les rewards chaque mois.
-    """
-    
-    months = 0
-    while kas_amount > min_kas_threshold and months < max_months:
-        months += 1
-        kas_amount -= rewards_per_month  # Déduire les rewards chaque mois
-        if kas_amount <= min_kas_threshold:
-            break
-    
-    return months
-
-
-def calculate_months_with_reinvestment(kas_amount, rewards_per_month, electricity_cost, kas_growth_factor, kas_price, reinvest_percentage=0.5, max_months=24, min_kas_threshold=0.01):
-    """
-    Calcule le nombre de mois pendant lesquels il est possible de tenir avec un réinvestissement de 50%
-    du coût d'électricité chaque mois dans l'achat de KAS, en prenant en compte une augmentation du prix du KAS.
-    """
-    
-    months = 0
-    current_kas_price = kas_price  # Prix initial du KAS
-    
-    while kas_amount > min_kas_threshold and months < max_months:
-        months += 1
-        
-        # Réinvestir 50% du coût de l'électricité pour acheter du KAS
-        kas_bought_with_reinvestment = (electricity_cost * reinvest_percentage) / current_kas_price
-        kas_amount += kas_bought_with_reinvestment
-        
-        # Déduire les rewards de KAS pour ce mois
-        kas_amount -= rewards_per_month
-        
-        # Augmenter le prix du KAS pour le mois suivant (en fonction de la croissance)
-        current_kas_price *= kas_growth_factor
-        
-        # Vérifier si le KAS est épuisé
-        if kas_amount <= min_kas_threshold:
-            break
-    
-    return months
-    
 # Calcul sans réinvestissement
 months_no_reinvestment = calculate_months_no_reinvestment(initial_kas_amount, rewards_per_month)
 
