@@ -148,10 +148,10 @@ st.markdown(f"Somme totale des récompenses sur 24 mois : **{total_rewards:,.2f}
 # Fonction de calcul sans réinvestissement (en utilisant les rewards précises)
 def calculate_months_no_reinvestment(kas_amount, rewards, max_months=24, min_kas_threshold=0.01):
     months = 0
-    for reward in rewards:
+    for reward in rewards:  # 'reward' est directement une valeur float, pas un dictionnaire
         if kas_amount <= min_kas_threshold or months >= max_months:
             break
-        kas_amount -= reward['Reward (KAS)']  # Utilisation correcte des rewards en KAS
+        kas_amount -= reward  # Déduire directement la valeur de reward (en KAS)
         months += 1
     return months
 
@@ -159,7 +159,7 @@ def calculate_months_no_reinvestment(kas_amount, rewards, max_months=24, min_kas
 def calculate_months_with_reinvestment(kas_amount, rewards, electricity_cost, kas_growth_factor, kas_price, reinvest_percentage=0.5, max_months=24, min_kas_threshold=0.01):
     months = 0
     current_kas_price = kas_price  # Prix initial du KAS
-    for reward in rewards:
+    for reward in rewards:  # 'reward' est directement une valeur float, pas un dictionnaire
         if kas_amount <= min_kas_threshold or months >= max_months:
             break
         
@@ -167,8 +167,8 @@ def calculate_months_with_reinvestment(kas_amount, rewards, electricity_cost, ka
         kas_bought_with_reinvestment = (electricity_cost * reinvest_percentage) / current_kas_price
         kas_amount += kas_bought_with_reinvestment
         
-        # Déduire les rewards de KAS pour ce mois (extraction correcte de la clé)
-        kas_amount -= reward['Reward (KAS)']
+        # Déduire directement la valeur de reward (en KAS)
+        kas_amount -= reward
         
         # Augmenter le prix du KAS pour le mois suivant
         current_kas_price *= kas_growth_factor
@@ -176,7 +176,7 @@ def calculate_months_with_reinvestment(kas_amount, rewards, electricity_cost, ka
         months += 1
     
     return months
-
+    
 # Calcul sans réinvestissement
 months_no_reinvestment = calculate_months_no_reinvestment(initial_kas_amount, rewards)
 
