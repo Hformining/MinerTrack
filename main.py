@@ -5,9 +5,26 @@ import pandas as pd
 st.title("MinerTrack")
 
 # Champs de saisie pour les paramètres
-initial_network_power = st.number_input("Puissance initiale du réseau (en TH/s)", value=1.1e6, step=1e5, format="%.0f")
-machine_power = st.number_input("Puissance de votre machine (en TH/s)", value=21, step=1.0, format="%.0f")
-network_growth_per_month = st.number_input("Croissance mensuelle du réseau (en TH/s)", value=100e3, step=1e3, format="%.0f")
+initial_network_power = st.number_input(
+    "Puissance initiale du réseau (en TH/s)", 
+    value=1.1e6, 
+    step=1e5, 
+    format="%.0f"
+)
+
+machine_power = st.number_input(
+    "Puissance de votre machine (en TH/s)", 
+    value=21.0, 
+    step=1.0, 
+    format="%.2f"
+)
+
+network_growth_per_month = st.number_input(
+    "Croissance mensuelle du réseau (en TH/s)", 
+    value=100e3, 
+    step=1e3, 
+    format="%.0f"
+)
 
 # Données d'émission de KAS par mois
 data = {
@@ -55,4 +72,3 @@ st.dataframe(result_df)
 # Calculer la somme des récompenses sur 24 mois
 total_rewards = result_df['Reward (KAS)'].sum()
 st.write(f"Somme totale des récompenses sur 24 mois : {total_rewards:.2f} KAS")
-
