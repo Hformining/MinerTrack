@@ -188,4 +188,3 @@ else:
 # Afficher les résultats pour les trois scénarios de conservation de la marge électrique
 st.write(f"Nombre de mois garantis si marge électrique 100% conservée : {months_100} mois")
 st.write(f"Nombre de mois garantis si marge électrique 50% conservée : {months_50} mois")
-st.write(f"Nombre de mois garantis si marge électrique 25% conservée : {months_25} mois")
