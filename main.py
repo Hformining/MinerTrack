@@ -90,6 +90,9 @@ kas_monthly_increase = st.number_input("Pourcentage d'augmentation mensuel du KA
 # Calculer le coût d'électricité mensuel
 electricity_cost_per_month = power_consumption * 24 * 30 * electricity_price  # 24 heures/jour, 30 jours/mois
 
+# Calcul du coût total de l'électricité sur 24 mois
+total_electricity_cost = electricity_cost_per_month * 24
+
 # Calculer le nombre de KAS pouvant être acheté avec le prix actuel du marché
 initial_kas_amount = market_price / kas_price  # $2000 ÷ prix du KAS
 
