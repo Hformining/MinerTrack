@@ -48,7 +48,7 @@ machine_power = st.number_input(
 market_price = st.number_input(
 	"Prix actuel du marché (en $)", 
 	value=2000, 
-	step=100"
+	step=100
 )
 
 # Entrée pour la croissance mensuelle du réseau en PH/s
