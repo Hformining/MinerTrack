@@ -45,7 +45,12 @@ machine_power = st.number_input(
     format="%.2f"
 )
 
-market_price = st.number_input("Prix actuel du marché (en $)", value=2000, step=100, format="%.0f")
+market_price = st.number_input(
+	"Prix actuel du marché (en $)", 
+	value=2000, 
+	step=100, 
+	format="%.0f"
+)
 
 # Entrée pour la croissance mensuelle du réseau en PH/s
 network_growth_per_month_phs = st.number_input(
