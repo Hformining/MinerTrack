@@ -158,48 +158,57 @@ else:
     st.markdown(f"<span style='color:red'>Delta prix de vente optimal - bénéfice : **{delta_profit:,.2f} $**</span>", unsafe_allow_html=True)
 
 
-def calculate_months(kas_amount, electricity_cost, kas_growth_factor, percentage_conserved, max_months=24, min_kas_threshold=0.01):
+def calculate_months_no_reinvestment(kas_amount, rewards_per_month, max_months=24, min_kas_threshold=0.01):
     """
-    Calcule le nombre de mois pendant lesquels il est possible de tenir avec la quantité initiale de KAS,
-    en prenant en compte l'augmentation du prix du KAS et le réinvestissement.
+    Calcule le nombre de mois pendant lesquels il est possible de tenir sans réinvestissement
+    avec un stock initial de KAS, en déduisant les rewards chaque mois.
     """
     
     months = 0
-    current_kas_price = kas_price  # Le prix du KAS évolue chaque mois
+    while kas_amount > min_kas_threshold and months < max_months:
+        months += 1
+        kas_amount -= rewards_per_month  # Déduire les rewards chaque mois
+        if kas_amount <= min_kas_threshold:
+            break
     
-    # Calculer les pourcentages une seule fois pour éviter les recalculs dans la boucle
-    percentage_conserved_factor = percentage_conserved / 100
-    percentage_reinvested_factor = (100 - percentage_conserved) / 100
+    return months
 
+
+def calculate_months_with_reinvestment(kas_amount, rewards_per_month, electricity_cost, kas_growth_factor, kas_price, reinvest_percentage=0.5, max_months=24, min_kas_threshold=0.01):
+    """
+    Calcule le nombre de mois pendant lesquels il est possible de tenir avec un réinvestissement de 50%
+    du coût d'électricité chaque mois dans l'achat de KAS, en prenant en compte une augmentation du prix du KAS.
+    """
+    
+    months = 0
+    current_kas_price = kas_price  # Prix initial du KAS
+    
     while kas_amount > min_kas_threshold and months < max_months:
         months += 1
         
-        # 1. Calculer la quantité de KAS nécessaire pour payer l'électricité
-        kas_needed_for_electricity = electricity_cost * percentage_conserved_factor / current_kas_price
-        kas_amount -= kas_needed_for_electricity
+        # Réinvestir 50% du coût de l'électricité pour acheter du KAS
+        kas_bought_with_reinvestment = (electricity_cost * reinvest_percentage) / current_kas_price
+        kas_amount += kas_bought_with_reinvestment
         
-        # Vérifier si le montant restant de KAS est suffisant pour continuer
+        # Déduire les rewards de KAS pour ce mois
+        kas_amount -= rewards_per_month
+        
+        # Augmenter le prix du KAS pour le mois suivant (en fonction de la croissance)
+        current_kas_price *= kas_growth_factor
+        
+        # Vérifier si le KAS est épuisé
         if kas_amount <= min_kas_threshold:
             break
-        
-        # 2. Calculer combien de KAS est acheté avec le réinvestissement
-        # Important : Ici, plus le KAS augmente, moins tu pourras en acheter avec le même montant de réinvestissement.
-        kas_bought_with_reinvested_money = (electricity_cost * percentage_reinvested_factor) / current_kas_price
-        
-        # Appliquer le réinvestissement uniquement si cela reste efficace
-        if kas_bought_with_reinvested_money > min_kas_threshold:
-            kas_amount += kas_bought_with_reinvested_money
-        
-        # 3. Augmenter le prix du KAS pour le mois suivant
-        current_kas_price *= kas_growth_factor  # Le KAS devient plus cher chaque mois
-
+    
     return months
     
-# Calcul du nombre de mois garantis pour chaque scénario
-months_100 = calculate_months(initial_kas, electricity_cost_per_month, kas_growth_factor, 100)
-months_75 = calculate_months(initial_kas, electricity_cost_per_month, kas_growth_factor, 75)
+# Calcul sans réinvestissement
+months_no_reinvestment = calculate_months_no_reinvestment(initial_kas_amount, rewards_per_month)
 
-# Afficher les résultats pour les trois scénarios de conservation de la marge électrique
-st.write(f"Nombre de mois garantis si marge électrique 100% conservée : {months_100} mois")
-st.write(f"Nombre de mois garantis si marge électrique 75% conservée : {months_75} mois")
+# Calcul avec réinvestissement
+months_with_reinvestment = calculate_months_with_reinvestment(initial_kas_amount, rewards_per_month, electricity_cost_per_month, kas_growth_factor, kas_price)
+
+# Affichage des résultats
+st.write(f"Nombre de mois garantis sans réinvestissement : {months_no_reinvestment} mois")
+st.write(f"Nombre de mois garantis avec réinvestissement de 50% du coût d'électricité : {months_with_reinvestment} mois")
 
