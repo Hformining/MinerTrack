@@ -5,6 +5,8 @@ from datetime import datetime
 # Titre de l'application
 st.title("MinerTrack")
 
+# Obtenir la date actuelle
+today = datetime.now()
 
 # Organiser les champs en trois colonnes
 col1, col2, col3 = st.columns(3)
@@ -12,6 +14,25 @@ col1, col2, col3 = st.columns(3)
 # Colonne 1
 with col1:
     start_date = st.date_input("Date de branchement", datetime.now())
+
+	# Calculer le mois à partir de la date de branchement
+	months_passed = (start_date.year - 2024) * 12 + (start_date.month - 10) + 36
+
+	# Liste complète des données d'émission de KAS
+	data = {
+    	"Month": list(range(36, 87)),
+    	"Total KAS Emitted": [216713637, 204550435, 193069902, 182233721, 172005728, 162351788, 153239683, 144639000,
+                          136521037, 128858700, 121626417, 114800050, 108356819, 102275218, 96534951, 91116860,
+                          86002864, 81175894, 76619841, 72319500, 68260518, 64429350, 60813208, 57140025,
+                          54178409, 51137609, 48267475, 45558430, 43001432, 40587947, 38309921, 36159750,
+                          34130259, 32214675, 30406604, 28700013, 27089205, 25568804, 24133738, 22779215,
+                          21500716, 20293974, 19154960, 18079875, 17065130, 16107337, 15203302, 14350006,
+                          13544602, 12784402, 12066869],
+	}
+
+	# Créer un DataFrame pour les données d'émission et filtrer à partir de la date de branchement
+	df = pd.DataFrame(data)
+	df_filtered = df[df["Month"] >= months_passed].head(24)  # Sélectionner les 24 mois à partir de la date de branchement
 
     initial_network_power = st.number_input(
         "Puissance initiale du réseau (en TH/s)", 
@@ -25,25 +46,6 @@ with col1:
         value=2000, 
         step=100
     )
-
-# Obtenir la date actuelle
-today = datetime.now()
-
-# Liste complète des données d'émission de KAS
-data = {
-    "Month": list(range(36, 87)),
-    "Total KAS Emitted": [216713637, 204550435, 193069902, 182233721, 172005728, 162351788, 153239683, 144639000,
-                          136521037, 128858700, 121626417, 114800050, 108356819, 102275218, 96534951, 91116860,
-                          86002864, 81175894, 76619841, 72319500, 68260518, 64429350, 60813208, 57140025,
-                          54178409, 51137609, 48267475, 45558430, 43001432, 40587947, 38309921, 36159750,
-                          34130259, 32214675, 30406604, 28700013, 27089205, 25568804, 24133738, 22779215,
-                          21500716, 20293974, 19154960, 18079875, 17065130, 16107337, 15203302, 14350006,
-                          13544602, 12784402, 12066869],
-}
-
-# Créer un DataFrame pour les données d'émission et filtrer à partir de la date de branchement
-df = pd.DataFrame(data)
-df_filtered = df[df["Month"] >= months_passed].head(24)  # Sélectionner les 24 mois à partir de la date de branchement
 
 # Colonne 2
 with col2:
