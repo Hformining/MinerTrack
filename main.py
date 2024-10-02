@@ -14,6 +14,20 @@ col1, col2, col3 = st.columns(3)
 # Colonne 1
 with col1:
     start_date = st.date_input("Date de branchement", datetime.now())
+    
+    # Champs dans la première colonne
+    initial_network_power = st.number_input(
+        "Puissance initiale du réseau (en TH/s)", 
+        value=1.1e6, 
+        step=1e5, 
+        format="%.0f"
+    )
+    
+    market_price = st.number_input(
+        "Prix actuel du marché (en $)", 
+        value=2000, 
+        step=100
+    )
 
 # Calculer le mois à partir de la date de branchement
 months_passed = (start_date.year - 2024) * 12 + (start_date.month - 10) + 36
@@ -33,19 +47,6 @@ data = {
 # Créer un DataFrame pour les données d'émission et filtrer à partir de la date de branchement
 df = pd.DataFrame(data)
 df_filtered = df[df["Month"] >= months_passed].head(24)  # Sélectionner les 24 mois à partir de la date de branchement
-
-    initial_network_power = st.number_input(
-        "Puissance initiale du réseau (en TH/s)", 
-        value=1.1e6, 
-        step=1e5, 
-        format="%.0f"
-    )
-    
-    market_price = st.number_input(
-        "Prix actuel du marché (en $)", 
-        value=2000, 
-        step=100
-    )
 
 # Colonne 2
 with col2:
