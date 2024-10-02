@@ -176,27 +176,27 @@ if selected_coin == "KAS":
 # Calculer le mois à partir de la date de branchement
 months_passed = (start_date.year - 2024) * 12 + (start_date.month - 10) + 36
 
-    rewards = []
-    daily_reward = daily_coin_yield_per_gh * machine_power  # Récompenses journalières
-    monthly_reward = daily_reward * 30  # Récompenses mensuelles
+rewards = []
+daily_reward = daily_coin_yield_per_gh * machine_power  # Récompenses journalières
+monthly_reward = daily_reward * 30  # Récompenses mensuelles
 
-    for month in range(1, 25):  # Sur 24 mois
-        # Calcul du hashrate du réseau pour le mois en question
-        current_network_power = initial_network_power + (network_growth_per_month_phs * month)
-        
-        # Conversion de PH/s à GH/s pour le réseau
-        current_network_power_gh = current_network_power * 1e6  # Convertir PH en GH
-        
-        # Part de la machine sur le réseau
-        machine_share = machine_power / current_network_power_gh
-        
-        # Récompense mensuelle ajustée en fonction de la part de la machine
-        adjusted_reward = monthly_reward * machine_share
-        
-        rewards.append(adjusted_reward)
+for month in range(1, 25):  # Sur 24 mois
+    # Calcul du hashrate du réseau pour le mois en question
+    current_network_power = initial_network_power + (network_growth_per_month_phs * month)
     
-    total_rewards = sum(rewards)  # Total sur 24 mois
-    st.write(f"Récompenses projetées sur 24 mois : **{total_rewards:,.2f} ALEPH**")
+    # Conversion de PH/s à GH/s pour le réseau
+    current_network_power_gh = current_network_power * 1e6  # Convertir PH en GH
+    
+    # Part de la machine sur le réseau
+    machine_share = machine_power / current_network_power_gh
+    
+    # Récompense mensuelle ajustée en fonction de la part de la machine
+    adjusted_reward = monthly_reward * machine_share
+    
+    rewards.append(adjusted_reward)
+
+total_rewards = sum(rewards)  # Total sur 24 mois
+st.write(f"Récompenses projetées sur 24 mois : **{total_rewards:,.2f} ALEPH**")
 
 elif selected_coin == "KAS":
     # Liste complète des données d'émission de KAS (comme avant)
