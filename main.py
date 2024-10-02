@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 from datetime import datetime
-import streamlit.components.v1 as components
 
 # Titre de l'application
 st.title("MinerTrack")
@@ -147,7 +146,7 @@ total_rewards = result_df['Reward (KAS)'].sum()
 # Afficher la somme totale des récompenses avec séparateur de milliers et en gras
 st.markdown(f"Somme totale des récompenses sur 24 mois : **{total_rewards:,.2f} KAS**")
 
-components.html("""<hr style="height:1px;border:none;color:#333;background-color:#333;" /> """)
+st.markdown("---")  # Ajoute un trait horizontal
 
 # Fonction de calcul sans réinvestissement (en utilisant les rewards précises)
 def calculate_months_no_reinvestment(kas_amount, rewards, max_months=24, min_kas_threshold=0.01):
@@ -222,21 +221,25 @@ delta_profit = optimal_sale_price - total_electricity_cost
 # Organiser les résultats en deux colonnes
 col4, col5 = st.columns(2)
 
+# Colonne de gauche
 with col4:
-	# Afficher le coût mensuel et le coût total d'électricité
-	st.markdown(f"Coût mensuel de l'électricité : **{electricity_cost_per_month:,.2f} $ /mois**")
-	st.markdown(f"Marge de l'électricité sur 24 mois : **{total_electricity_cost:,.2f} $**")
+    # Utiliser des metrics pour afficher les résultats
+    st.metric(label="Coût mensuel de l'électricité", value=f"{electricity_cost_per_month:,.2f} $/mois")
+    st.metric(label="Marge de l'électricité sur 24 mois", value=f"{total_electricity_cost:,.2f} $")
+    st.metric(label="Prix de vente optimal de la machine", value=f"{optimal_sale_price:,.2f} $")
+    
+    # Delta avec une couleur conditionnelle en fonction du signe du delta
+    if delta_profit >= 0:
+        st.metric(label="Delta prix de vente optimal - bénéfice", value=f"{delta_profit:,.2f} $", delta="Profit", delta_color="normal")
+    else:
+        st.metric(label="Delta prix de vente optimal - bénéfice", value=f"{delta_profit:,.2f} $", delta="Perte", delta_color="inverse")
 
-	# Afficher le prix de vente optimal de la machine avec séparateur de milliers et en gras
-	st.markdown(f"Prix de vente optimal de la machine : **{optimal_sale_price:,.2f} $**")
-
-	st.markdown(f"Delta prix de vente optimal - bénéfice : **{delta_profit:,.2f} $**",)
-
+# Colonne de droite
 with col5:
-	# Affichage des résultats
-	st.write(f"Nombre de mois garantis sans réinvestissement : {months_no_reinvestment} mois")
-	st.write(f"Nombre de mois garantis avec réinvestissement de 50% du coût d'électricité : {months_with_50_percent_reinvestment} mois")
-	st.write(f"Nombre de mois garantis avec réinvestissement de 75% du coût d'électricité : {months_with_75_percent_reinvestment} mois")
+    # Utiliser des metrics pour afficher les résultats sur les mois garantis
+    st.metric(label="Nombre de mois garantis sans réinvestissement", value=f"{months_no_reinvestment}")
+    st.metric(label="Nombre de mois garantis avec réinvestissement de 50%", value=f"{months_with_50_percent_reinvestment}")
+    st.metric(label="Nombre de mois garantis avec réinvestissement de 75%", value=f"{months_with_75_percent_reinvestment}")
 
 
 
