@@ -47,36 +47,36 @@ if selected_coin == "KAS":
         
         initial_network_power = st.number_input(
             "Puissance initiale du réseau (TH/s)", 
-            value=initial_network_power, 
-            step=1e5, 
+            value=float(initial_network_power),  # Assurez-vous que le type soit float
+            step=1e5,  # Assurez-vous que le pas soit float également
             format="%.0f"
         )
         
         market_price = st.number_input(
             "Prix actuel du marché ($)", 
-            value=2000, 
-            step=100
+            value=float(2000),  # Assurez-vous que le type soit float
+            step=100  # Assurez-vous que le type de `step` soit cohérent
         )
 
     # Colonne 2 pour KAS
     with col2:
         machine_power = st.number_input(
             "Puissance de la machine (TH/s)", 
-            value=machine_power, 
-            step=1.0, 
+            value=float(machine_power),  # Assurez-vous que le type soit float
+            step=1.0,  # Assurez-vous que le type de `step` soit cohérent
             format="%.2f"
         )
         
         network_growth_per_month_phs = st.number_input(
             "Croissance/mois du réseau (PH/s)", 
-            value=network_growth_per_month_phs, 
+            value=float(network_growth_per_month_phs),  # Assurez-vous que le type soit float
             step=1.0, 
             format="%.2f"
         )
         
         power_consumption = st.number_input(
             "Conso élec de la machine (kW/h)", 
-            value=power_consumption, 
+            value=float(power_consumption),  # Assurez-vous que le type soit float
             step=0.1, 
             format="%.2f"
         )
@@ -85,21 +85,21 @@ if selected_coin == "KAS":
     with col3:
         electricity_price = st.number_input(
             "Prix de l'électricité (en $/kW)", 
-            value=electricity_price, 
+            value=float(electricity_price),  # Assurez-vous que le type soit float
             step=0.01, 
             format="%.2f"
         )
         
         kas_price = st.number_input(
             "Prix du KAS (en $)", 
-            value=kas_price, 
+            value=float(kas_price),  # Assurez-vous que le type soit float
             step=0.01, 
             format="%.2f"
         )
         
         kas_monthly_increase = st.number_input(
             "% d'augmentation du KAS (par mois)", 
-            value=kas_monthly_increase, 
+            value=float(kas_monthly_increase),  # Assurez-vous que le type soit float
             step=0.1, 
             format="%.2f"
         )
@@ -111,29 +111,29 @@ elif selected_coin == "Alephium":
         
         machine_power = st.number_input(
             "Puissance de la machine (GH/s)", 
-            value=machine_power, 
-            step=100, 
+            value=float(machine_power),  # Assurez-vous que le type soit float
+            step=100.0,  # Utilisez un pas en float ici aussi
             format="%.0f"
         )
         
         market_price = st.number_input(
             "Prix actuel du marché ($)", 
-            value=market_price, 
-            step=100
+            value=float(market_price),  # Assurez-vous que le type soit float
+            step=100.0  # Step float ici aussi
         )
 
     # Colonne 2 pour Alephium
     with col2:
         network_growth_per_month_phs = st.number_input(
             "Croissance/mois du réseau (PH/s)", 
-            value=network_growth_per_month_phs, 
+            value=float(network_growth_per_month_phs),  # Assurez-vous que le type soit float
             step=0.1, 
             format="%.2f"
         )
         
         power_consumption = st.number_input(
             "Conso élec de la machine (kW/h)", 
-            value=power_consumption, 
+            value=float(power_consumption),  # Assurez-vous que le type soit float
             step=0.1, 
             format="%.2f"
         )
@@ -142,21 +142,21 @@ elif selected_coin == "Alephium":
     with col3:
         electricity_price = st.number_input(
             "Prix de l'électricité (en $/kW)", 
-            value=0.05, 
+            value=float(electricity_price),  # Assurez-vous que le type soit float
             step=0.01, 
             format="%.2f"
         )
         
         aleph_price = st.number_input(
             "Prix du ALEPH (en $)", 
-            value=aleph_price, 
+            value=float(aleph_price),  # Assurez-vous que le type soit float
             step=0.01, 
             format="%.2f"
         )
         
         monthly_increase_aleph = st.number_input(
             "% d'augmentation du ALEPH (par mois)", 
-            value=monthly_increase_aleph, 
+            value=float(monthly_increase_aleph),  # Assurez-vous que le type soit float
             step=0.1, 
             format="%.2f"
         )
