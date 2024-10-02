@@ -26,6 +26,7 @@ if selected_coin == "KAS":
     initial_network_power = 1.1e6  # 1.1 EH/s en TH/s
     network_growth_per_month_phs = 100  # Croissance mensuelle du réseau en PH/s
     machine_power = 21.0  # Puissance de la machine en TH/s
+    daily_coin_yield_per_gh = 0.00  # Rendement journalier en ALEPH par GH/s
 
 elif selected_coin == "Alephium":
     machine_power = 16600  # Puissance de la machine en GH/s
@@ -121,12 +122,6 @@ elif selected_coin == "Alephium":
             "Prix actuel du marché ($)", 
             value=float(market_price),  # Assurez-vous que le type soit float
             step=100.0  # Step float ici aussi
-        )
-
-        daily_coin_yield_per_gh = st.number_input(
-            "Daily Coin Yield per GH", 
-            value=float(daily_coin_yield_per_gh),  # Assurez-vous que le type soit float
-            step=0.0051  # Step float ici aussi
         )
 
     # Colonne 2 pour Alephium
