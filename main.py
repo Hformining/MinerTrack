@@ -146,7 +146,7 @@ total_rewards = result_df['Reward (KAS)'].sum()
 # Afficher la somme totale des récompenses avec séparateur de milliers et en gras
 st.markdown(f"Somme totale des récompenses sur 24 mois : **{total_rewards:,.2f} KAS**")
 
-st.markdown(f"<hr style='height:10px;border:none;color:#333;background-color:#333;'/>")
+components.html("""<hr style="height:10px;border:none;color:#333;background-color:#333;" /> """)
 
 # Fonction de calcul sans réinvestissement (en utilisant les rewards précises)
 def calculate_months_no_reinvestment(kas_amount, rewards, max_months=24, min_kas_threshold=0.01):
