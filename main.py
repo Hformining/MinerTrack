@@ -180,9 +180,12 @@ rewards = []
 daily_reward = daily_coin_yield_per_gh * machine_power  # Récompenses journalières
 monthly_reward = daily_reward * 30  # Récompenses mensuelles
 
+# Pour Alephium : calcul des récompenses sur 24 mois avec croissance du réseau
 if selected_coin == "Alephium":
     rewards = []
-    daily_reward = daily_coin_yield_per_gh * machine_power  # Récompenses journalières
+    
+    # Récompenses journalières sans ajustement du réseau
+    daily_reward = daily_coin_yield_per_gh * machine_power  # 84.66 ALEPH/day pour une machine de 16,600 GH/s
     monthly_reward = daily_reward * 30  # Récompenses mensuelles
 
     for month in range(1, 25):  # Sur 24 mois
