@@ -110,13 +110,13 @@ elif selected_coin == "Alephium":
     with col1:
         start_date = st.date_input("Date de branchement", datetime.now())
         
-        machine_power = st.number_input(
-            "Puissance de la machine (GH/s)", 
-            value=float(machine_power),  # Assurez-vous que le type soit float
-            step=100.0,  # Utilisez un pas en float ici aussi
+        initial_network_power = st.number_input(
+            "Puissance initiale du réseau (PH/s)", 
+            value=float(initial_network_power),  # Assurez-vous que le type soit float
+            step=1e5,  # Assurez-vous que le pas soit float également
             format="%.0f"
         )
-        
+
         market_price = st.number_input(
             "Prix actuel du marché ($)", 
             value=float(market_price),  # Assurez-vous que le type soit float
@@ -125,6 +125,13 @@ elif selected_coin == "Alephium":
 
     # Colonne 2 pour Alephium
     with col2:
+        machine_power = st.number_input(
+            "Puissance de la machine (GH/s)", 
+            value=float(machine_power),  # Assurez-vous que le type soit float
+            step=100.0,  # Utilisez un pas en float ici aussi
+            format="%.0f"
+        )
+
         network_growth_per_month_phs = st.number_input(
             "Croissance/mois du réseau (PH/s)", 
             value=float(network_growth_per_month_phs),  # Assurez-vous que le type soit float
@@ -169,20 +176,17 @@ if selected_coin == "KAS":
 # Calculer le mois à partir de la date de branchement
 months_passed = (start_date.year - 2024) * 12 + (start_date.month - 10) + 36
 
-# Calcul spécifique à Alephium (simplifié)
+# Pour Alephium : calcul des récompenses sur 24 mois
 if selected_coin == "Alephium":
-    # Calcul des récompenses mensuelles basées sur le rendement journalier
-    daily_reward = machine_power * daily_coin_yield_per_gh  # ALEPH par jour
-    monthly_reward = daily_reward * 30  # ALEPH par mois (environ 30 jours par mois)
-    
     rewards = []
-    network_power = initial_network_power  # Puissance initiale du réseau en PH/s
-
-    for month in range(1, 25):  # 24 mois
-        machine_share = machine_power / (network_power * 1e3)  # Conversion PH/s en GH/s
-        reward = machine_share * monthly_reward
-        rewards.append(reward)
-        network_power += network_growth_per_month_phs  # Augmentation mensuelle du réseau
+    daily_reward = daily_coin_yield_per_gh * machine_power
+    monthly_reward = daily_reward * 30  # Multiplier par 30 jours pour les récompenses mensuelles
+    
+    for month in range(1, 25):  # Sur 24 mois
+        rewards.append(monthly_reward)
+    
+    total_rewards = sum(rewards)  # Total sur 24 mois
+    st.write(f"Récompenses projetées sur 24 mois : **{total_rewards:,.2f} ALEPH**")
 
 elif selected_coin == "KAS":
     # Liste complète des données d'émission de KAS (comme avant)
