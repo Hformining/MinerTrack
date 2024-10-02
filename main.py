@@ -138,15 +138,19 @@ result_df = pd.DataFrame({
 
 st.markdown("---")  # Ajoute un trait horizontal
 
-# Afficher les résultats
-st.write("Récompenses projetées sur 24 mois")
-st.dataframe(result_df)
+# Organiser les résultats en deux colonnes
+col4, col5 = st.columns(2)
 
-# Calculer la somme des récompenses sur 24 mois (cela devrait fonctionner maintenant)
-total_rewards = result_df['Reward (KAS)'].sum()
+with col4:
+	# Afficher les résultats
+	st.write("Récompenses projetées sur 24 mois")
+	st.dataframe(result_df)
 
-# Afficher la somme totale des récompenses avec séparateur de milliers et en gras
-st.markdown(f"Somme totale des récompenses sur 24 mois : **{total_rewards:,.2f} KAS**")
+	# Calculer la somme des récompenses sur 24 mois (cela devrait fonctionner maintenant)
+	total_rewards = result_df['Reward (KAS)'].sum()
+
+with col5:
+	st.metric(label="Somme totale des récompenses sur 24 mois", value=f"{total_rewards:,.2f} KAS")
 
 st.markdown("---")  # Ajoute un trait horizontal
 
@@ -221,10 +225,10 @@ optimal_sale_price = total_rewards * kas_price
 delta_profit = optimal_sale_price - total_electricity_cost
 
 # Organiser les résultats en deux colonnes
-col4, col5 = st.columns(2)
+col6, col7 = st.columns(2)
 
 # Colonne de gauche
-with col4:
+with col6:
     # Utiliser des metrics pour afficher les résultats
     st.metric(label="Coût mensuel de l'électricité", value=f"{electricity_cost_per_month:,.2f} $/mois")
     st.metric(label="Marge de l'électricité sur 24 mois", value=f"{total_electricity_cost:,.2f} $")
@@ -237,7 +241,7 @@ with col4:
         st.metric(label="Delta prix de vente optimal - bénéfice", value=f"{delta_profit:,.2f} $", delta="Perte", delta_color="inverse")
 
 # Colonne de droite
-with col5:
+with col7:
     # Utiliser des metrics pour afficher les résultats sur les mois garantis
     st.metric(label="Nombre de mois garantis sans réinvestissement", value=f"{months_no_reinvestment}")
     st.metric(label="Nombre de mois garantis avec réinvestissement de 50%", value=f"{months_with_50_percent_reinvestment}")
