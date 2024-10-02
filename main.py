@@ -123,6 +123,12 @@ elif selected_coin == "Alephium":
             step=100.0  # Step float ici aussi
         )
 
+        daily_coin_yield_per_gh = st.number_input(
+            "Daily Coin Yield per GH", 
+            value=float(daily_coin_yield_per_gh),  # Assurez-vous que le type soit float
+            step=0.0051  # Step float ici aussi
+        )
+
     # Colonne 2 pour Alephium
     with col2:
         machine_power = st.number_input(
