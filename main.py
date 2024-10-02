@@ -8,12 +8,6 @@ st.title("MinerTrack")
 # Obtenir la date actuelle
 today = datetime.now()
 
-# Champ pour la date de branchement (avec la date d'aujourd'hui comme valeur par défaut)
-start_date = st.date_input("Date de branchement", today)
-
-# Calculer le mois à partir de la date de branchement
-months_passed = (start_date.year - 2024) * 12 + (start_date.month - 10) + 36
-
 # Liste complète des données d'émission de KAS
 data = {
     "Month": list(range(36, 87)),
@@ -30,62 +24,72 @@ data = {
 df = pd.DataFrame(data)
 df_filtered = df[df["Month"] >= months_passed].head(24)  # Sélectionner les 24 mois à partir de la date de branchement
 
-# Champs de saisie pour les paramètres
-initial_network_power = st.number_input(
-    "Puissance initiale du réseau (en TH/s)", 
-    value=1.1e6,  # 1.1 EH/s en TH/s
-    step=1e5, 
-    format="%.0f"
-)
 
-machine_power = st.number_input(
-    "Puissance de votre machine (en TH/s)", 
-    value=21.0, 
-    step=1.0, 
-    format="%.2f"
-)
+# Organiser les champs en trois colonnes
+col1, col2, col3 = st.columns(3)
 
-market_price = st.number_input(
-    "Prix actuel du marché (en $)", 
-    value=2000, 
-    step=100
-)
+# Colonne 1
+with col1:
+    start_date = st.date_input("Date de branchement", datetime.now())
 
-# Entrée pour la croissance mensuelle du réseau en PH/s
-network_growth_per_month_phs = st.number_input(
-    "Croissance mensuelle du réseau (en PH/s)", 
-    value=100.0,  # Valeur par défaut 100 PH/s
-    step=1.0, 
-    format="%.2f"
-)
+    initial_network_power = st.number_input(
+        "Puissance initiale du réseau (en TH/s)", 
+        value=1.1e6, 
+        step=1e5, 
+        format="%.0f"
+    )
+    
+    market_price = st.number_input(
+        "Prix actuel du marché (en $)", 
+        value=2000, 
+        step=100
+    )
 
-# Conversion de PH/s en TH/s pour les calculs
-network_growth_per_month = network_growth_per_month_phs * 1e3  # 1 PH/s = 1000 TH/s
+# Colonne 2
+with col2:
+    machine_power = st.number_input(
+        "Puissance de votre machine (en TH/s)", 
+        value=21.0, 
+        step=1.0, 
+        format="%.2f"
+    )
+    
+    network_growth_per_month_phs = st.number_input(
+        "Croissance mensuelle du réseau (en PH/s)", 
+        value=100.0, 
+        step=1.0, 
+        format="%.2f"
+    )
+    
+    power_consumption = st.number_input(
+        "Consommation électrique de la machine (en kW/h)", 
+        value=3.5, 
+        step=0.1, 
+        format="%.2f"
+    )
 
-# Nouveau : Champs pour la consommation électrique et le prix de l'électricité
-power_consumption = st.number_input(
-    "Consommation électrique de la machine (en kW/h)", 
-    value=3.5,  # Valeur par défaut
-    step=0.1, 
-    format="%.2f"
-)
-
-electricity_price = st.number_input(
-    "Prix de l'électricité (en $/kW)", 
-    value=0.05,  # Valeur par défaut
-    step=0.01, 
-    format="%.2f"
-)
-
-# Nouveau : Prix du KAS
-kas_price = st.number_input(
-    "Prix du KAS (en $)", 
-    value=0.16,  # Valeur de référence
-    step=0.01, 
-    format="%.2f"
-)
-
-kas_monthly_increase = st.number_input("Pourcentage d'augmentation mensuel du KAS (en %)", value=2.0, step=0.1, format="%.2f")
+# Colonne 3
+with col3:
+    electricity_price = st.number_input(
+        "Prix de l'électricité (en $/kW)", 
+        value=0.05, 
+        step=0.01, 
+        format="%.2f"
+    )
+    
+    kas_price = st.number_input(
+        "Prix du KAS (en $)", 
+        value=0.16, 
+        step=0.01, 
+        format="%.2f"
+    )
+    
+    kas_monthly_increase = st.number_input(
+        "Pourcentage d'augmentation mensuel du KAS (en %)", 
+        value=2.0, 
+        step=0.1, 
+        format="%.2f"
+    )
 
 # Calculer le coût d'électricité mensuel
 electricity_cost_per_month = power_consumption * 24 * 30 * electricity_price  # 24 heures/jour, 30 jours/mois
