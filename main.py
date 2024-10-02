@@ -136,6 +136,8 @@ result_df = pd.DataFrame({
     "Reward (KAS)": rewards  # Utilisation directe des rewards en float
 })
 
+st.markdown("---")  # Ajoute un trait horizontal
+
 # Afficher les résultats
 st.write("Récompenses projetées sur 24 mois")
 st.dataframe(result_df)
