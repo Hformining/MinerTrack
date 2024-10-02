@@ -5,6 +5,9 @@ from datetime import datetime
 # Titre de l'application
 st.title("MinerTrack")
 
+# Obtenir la date actuelle
+today = datetime.now()
+
 # Ajouter une sidebar avec la sélection des monnaies
 selected_coin = st.sidebar.selectbox(
     "Choisissez la monnaie", 
