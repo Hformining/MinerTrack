@@ -55,7 +55,7 @@ if selected_coin == "KAS":
         market_price = st.number_input(
             "Prix actuel du marché ($)", 
             value=float(2000),  # Assurez-vous que le type soit float
-            step=100  # Assurez-vous que le type de `step` soit cohérent
+            step=100.0  # Assurez-vous que le type de `step` soit cohérent
         )
 
     # Colonne 2 pour KAS
