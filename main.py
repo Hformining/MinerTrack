@@ -176,14 +176,23 @@ if selected_coin == "KAS":
 # Calculer le mois à partir de la date de branchement
 months_passed = (start_date.year - 2024) * 12 + (start_date.month - 10) + 36
 
-# Pour Alephium : calcul des récompenses sur 24 mois
+# Pour Alephium : calcul des récompenses sur 24 mois avec croissance du réseau
 if selected_coin == "Alephium":
     rewards = []
     daily_reward = daily_coin_yield_per_gh * machine_power
-    monthly_reward = daily_reward * 30  # Multiplier par 30 jours pour les récompenses mensuelles
-    
+    monthly_reward = daily_reward * 30  # Récompenses mensuelles sans croissance du réseau
+
     for month in range(1, 25):  # Sur 24 mois
-        rewards.append(monthly_reward)
+        # Calcul du hashrate du réseau pour le mois en question
+        current_network_power = initial_network_power + (network_growth_per_month_phs * month)
+        
+        # Part de la machine sur le réseau
+        machine_share = machine_power / (current_network_power * 1e3)  # Convertir PH/s en GH/s
+        
+        # Récompense mensuelle ajustée
+        adjusted_reward = monthly_reward * machine_share
+        
+        rewards.append(adjusted_reward)
     
     total_rewards = sum(rewards)  # Total sur 24 mois
     st.write(f"Récompenses projetées sur 24 mois : **{total_rewards:,.2f} ALEPH**")
