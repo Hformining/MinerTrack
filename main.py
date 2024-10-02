@@ -17,14 +17,14 @@ with col1:
     
     # Champs dans la première colonne
     initial_network_power = st.number_input(
-        "Puissance initiale du réseau (en TH/s)", 
+        "Puissance initiale du réseau (TH/s)", 
         value=1.1e6, 
         step=1e5, 
         format="%.0f"
     )
     
     market_price = st.number_input(
-        "Prix actuel du marché (en $)", 
+        "Prix actuel du marché ($)", 
         value=2000, 
         step=100
     )
@@ -32,21 +32,21 @@ with col1:
 # Colonne 2
 with col2:
     machine_power = st.number_input(
-        "Puissance de votre machine (en TH/s)", 
+        "Puissance de la machine (TH/s)", 
         value=21.0, 
         step=1.0, 
         format="%.2f"
     )
     
     network_growth_per_month_phs = st.number_input(
-        "Croissance mensuelle du réseau (en PH/s)", 
+        "Croissance/mois du réseau (PH/s)", 
         value=100.0, 
         step=1.0, 
         format="%.2f"
     )
     
     power_consumption = st.number_input(
-        "Consommation électrique de la machine (en kW/h)", 
+        "Conso élec de la machine (kW/h)", 
         value=3.5, 
         step=0.1, 
         format="%.2f"
@@ -69,7 +69,7 @@ with col3:
     )
     
     kas_monthly_increase = st.number_input(
-        "Pourcentage d'augmentation mensuel du KAS (en %)", 
+        "%  d'augmentation du KAS (par mois)", 
         value=2.0, 
         step=0.1, 
         format="%.2f"
