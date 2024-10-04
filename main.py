@@ -40,6 +40,7 @@ elif selected_coin == "Alephium":
     reward_per_block = 0.5  # Récompense par bloc en ALEPH
     total_aleph_per_day = daily_blocks_emitted * reward_per_block  # Total ALEPH émis par jour
     electricity_price = 0.05  # Prix par défaut de l'électricité
+    daily_coin_yield_per_gh = 0.0051  # Prix par défaut de l'électricité
 
 # Organiser les champs de saisie sur 3 colonnes
 col1, col2, col3 = st.columns(3)
