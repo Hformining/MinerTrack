@@ -192,26 +192,29 @@ if selected_coin == "Alephium":
     rewards = []
     total_aleph_24_months = 0  # Cumulatif des récompenses sur 24 mois
 
-    for month in range(1, 25):  # Sur 24 mois
-        # Calcul du hashrate du réseau pour le mois en question
-        current_network_power = initial_network_power + (network_growth_per_month_phs * month)
+    total_aleph_per_day = st.number_input("Alephium émis par jour", value=43500.0, step=100.0)
+
+    # Conversion de PH/s à GH/s pour le réseau
+    initial_network_power_gh = initial_network_power * 1e6  # Convertir PH en GH
+
+    for month in range(1, 25):  # Calcul sur 24 mois
+        # Calcul du hashrate du réseau pour le mois en question (en GH/s)
+        current_network_power_gh = initial_network_power_gh + (network_growth_per_month_phs * 1e6 * month)
         
-        # Conversion de PH/s à GH/s pour le réseau
-        current_network_power_gh = current_network_power * 1e6  # Convertir PH en GH
-        
-        # Part de la machine sur le réseau
+        # Part de la machine sur le réseau (machine en GH/s par rapport au réseau en GH/s)
         machine_share = machine_power / current_network_power_gh
         
         # Récompense quotidienne ajustée en fonction de la part de la machine
         daily_reward = machine_share * total_aleph_per_day
         
-        # Récompenses mensuelles (30 jours)
+        # Récompenses mensuelles (30 jours par mois)
         monthly_reward = daily_reward * 30
         
-        # Ajout des récompenses mensuelles au cumulatif
+        # Cumulatif des récompenses sur 24 mois
         total_aleph_24_months += monthly_reward
         rewards.append(monthly_reward)
 
+        # Afficher les récompenses projetées sur 24 mois
         st.write(f"Récompenses projetées sur 24 mois : **{total_aleph_24_months:,.2f} ALEPH**")
 
 elif selected_coin == "KAS":
