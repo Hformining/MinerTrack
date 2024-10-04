@@ -205,7 +205,7 @@ if selected_coin == "Alephium":
         machine_share = machine_power / current_network_power_gh
         
         # Récompense quotidienne ajustée en fonction de la part de la machine
-        daily_reward = machine_share * total_aleph_per_day * 3600
+        daily_reward = machine_share * total_aleph_per_day
         
         # Récompenses mensuelles (30 jours par mois)
         monthly_reward = daily_reward * 30
