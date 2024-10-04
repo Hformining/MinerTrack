@@ -195,7 +195,7 @@ if selected_coin == "Alephium":
     total_aleph_per_day = st.number_input("Alephium émis par jour", value=43500.0, step=100.0)
 
     # Conversion de PH/s à GH/s pour le réseau
-    initial_network_power_gh = initial_network_power * 1e6  # Convertir PH en GH
+    initial_network_power_gh = initial_network_power * 1e3  # Convertir PH en GH
 
     for month in range(1, 25):  # Calcul sur 24 mois
         # Calcul du hashrate du réseau pour le mois en question (en GH/s)
