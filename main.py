@@ -171,8 +171,6 @@ elif selected_coin == "Alephium":
             format="%.2f"
         )
 
-# Calcul du coût d'électricité mensuel
-electricity_cost_per_month = power_consumption * 24 * 30 * electricity_price  # 24
 
 # Conversion de PH/s en TH/s pour les calculs
 if selected_coin == "KAS":
