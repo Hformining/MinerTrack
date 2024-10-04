@@ -166,12 +166,6 @@ elif selected_coin == "Alephium":
             format="%.2f"
         )
         
-        total_aleph_per_day = st.number_input(
-            "Total ALEPH émis par jour", 
-            value=float(total_aleph_per_day),  
-            step=100.0, 
-            format="%.2f"
-        )
 
 # Calcul du coût d'électricité mensuel
 electricity_cost_per_month = power_consumption * 24 * 30 * electricity_price  # 24
