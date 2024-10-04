@@ -39,6 +39,7 @@ elif selected_coin == "Alephium":
     daily_blocks_emitted = 86400  # Nombre de blocs émis chaque jour
     reward_per_block = 0.5  # Récompense par bloc en ALEPH
     total_aleph_per_day = daily_blocks_emitted * reward_per_block  # Total ALEPH émis par jour
+    electricity_price = 0.05  # Prix par défaut de l'électricité
 
 # Organiser les champs de saisie sur 3 colonnes
 col1, col2, col3 = st.columns(3)
@@ -171,6 +172,8 @@ elif selected_coin == "Alephium":
             format="%.2f"
         )
 
+# Calcul du coût d'électricité mensuel
+electricity_cost_per_month = power_consumption * 24 * 30 * electricity_price  # 24
 
 # Conversion de PH/s en TH/s pour les calculs
 if selected_coin == "KAS":
