@@ -190,6 +190,7 @@ monthly_reward = daily_reward * 30  # Récompenses mensuelles
 # Pour Alephium : calcul des récompenses sur 24 mois avec croissance du réseau
 if selected_coin == "Alephium":
     rewards = []
+    total_aleph_24_months = 0  # Cumulatif des récompenses sur 24 mois
 
     for month in range(1, 25):  # Sur 24 mois
         # Calcul du hashrate du réseau pour le mois en question
@@ -207,9 +208,9 @@ if selected_coin == "Alephium":
         # Récompenses mensuelles (30 jours)
         monthly_reward = daily_reward * 30
         
+        # Ajout des récompenses mensuelles au cumulatif
+        total_aleph_24_months += monthly_reward
         rewards.append(monthly_reward)
-    
-    total_rewards = sum(rewards)  # Total sur 24 mois
 
 elif selected_coin == "KAS":
     # Liste complète des données d'émission de KAS (comme avant)
