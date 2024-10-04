@@ -32,12 +32,13 @@ elif selected_coin == "Alephium":
     machine_power = 16600  # Puissance de la machine en GH/s
     market_price = 10000  # Prix actuel du marché en $
     network_growth_per_month_phs = 6.5  # Croissance/mois du réseau en PH/s
-    electricity_price = 0.05
     initial_network_power = 17090  # Hashrate actuel du réseau ALEPH en PH/s
     power_consumption = 3.5  # Conso élec de la machine en kW/h
     aleph_price = 1.65  # Prix du ALEPH en $
-    daily_coin_yield_per_gh = 0.0051  # Rendement journalier en ALEPH par GH/s
     monthly_increase_aleph = 2.0  # Augmentation du ALEPH par mois
+    daily_blocks_emitted = 86400  # Nombre de blocs émis chaque jour
+    reward_per_block = 0.5  # Récompense par bloc en ALEPH
+    total_aleph_per_day = daily_blocks_emitted * reward_per_block  # Total ALEPH émis par jour
 
 # Organiser les champs de saisie sur 3 colonnes
 col1, col2, col3 = st.columns(3)
