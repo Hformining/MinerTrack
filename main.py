@@ -111,38 +111,31 @@ elif selected_coin == "Alephium":
     with col1:
         start_date = st.date_input("Date de branchement", datetime.now())
         
-        initial_network_power = st.number_input(
-            "Puissance initiale du réseau (PH/s)", 
-            value=float(initial_network_power),  # Assurez-vous que le type soit float
-            step=1e5,  # Assurez-vous que le pas soit float également
+        machine_power = st.number_input(
+            "Puissance de la machine (GH/s)", 
+            value=float(machine_power),  
+            step=100.0,  
             format="%.0f"
         )
-
+        
         market_price = st.number_input(
             "Prix actuel du marché ($)", 
-            value=float(market_price),  # Assurez-vous que le type soit float
-            step=100.0  # Step float ici aussi
+            value=float(market_price),  
+            step=100.0 
         )
 
     # Colonne 2 pour Alephium
     with col2:
-        machine_power = st.number_input(
-            "Puissance de la machine (GH/s)", 
-            value=float(machine_power),  # Assurez-vous que le type soit float
-            step=100.0,  # Utilisez un pas en float ici aussi
-            format="%.0f"
-        )
-
         network_growth_per_month_phs = st.number_input(
             "Croissance/mois du réseau (PH/s)", 
-            value=float(network_growth_per_month_phs),  # Assurez-vous que le type soit float
+            value=float(network_growth_per_month_phs),  
             step=0.1, 
             format="%.2f"
         )
         
         power_consumption = st.number_input(
             "Conso élec de la machine (kW/h)", 
-            value=float(power_consumption),  # Assurez-vous que le type soit float
+            value=float(power_consumption),  
             step=0.1, 
             format="%.2f"
         )
@@ -151,24 +144,34 @@ elif selected_coin == "Alephium":
     with col3:
         electricity_price = st.number_input(
             "Prix de l'électricité (en $/kW)", 
-            value=float(electricity_price),  # Assurez-vous que le type soit float
+            value=float(electricity_price),  
             step=0.01, 
             format="%.2f"
         )
         
         aleph_price = st.number_input(
             "Prix du ALEPH (en $)", 
-            value=float(aleph_price),  # Assurez-vous que le type soit float
+            value=float(aleph_price),  
             step=0.01, 
             format="%.2f"
         )
         
         monthly_increase_aleph = st.number_input(
             "% d'augmentation du ALEPH (par mois)", 
-            value=float(monthly_increase_aleph),  # Assurez-vous que le type soit float
+            value=float(monthly_increase_aleph),  
             step=0.1, 
             format="%.2f"
         )
+        
+        total_aleph_per_day = st.number_input(
+            "Total ALEPH émis par jour", 
+            value=float(total_aleph_per_day),  
+            step=100.0, 
+            format="%.2f"
+        )
+
+# Calcul du coût d'électricité mensuel
+electricity_cost_per_month = power_consumption * 24 * 30 * electricity_price  # 24
 
 # Conversion de PH/s en TH/s pour les calculs
 if selected_coin == "KAS":
@@ -184,10 +187,6 @@ monthly_reward = daily_reward * 30  # Récompenses mensuelles
 # Pour Alephium : calcul des récompenses sur 24 mois avec croissance du réseau
 if selected_coin == "Alephium":
     rewards = []
-    
-    # Récompenses journalières sans ajustement du réseau
-    daily_reward = daily_coin_yield_per_gh * machine_power  # 84.66 ALEPH/day pour une machine de 16,600 GH/s
-    monthly_reward = daily_reward * 30  # Récompenses mensuelles
 
     for month in range(1, 25):  # Sur 24 mois
         # Calcul du hashrate du réseau pour le mois en question
@@ -199,10 +198,13 @@ if selected_coin == "Alephium":
         # Part de la machine sur le réseau
         machine_share = machine_power / current_network_power_gh
         
-        # Récompense mensuelle ajustée en fonction de la part de la machine
-        adjusted_reward = monthly_reward * machine_share
+        # Récompense quotidienne ajustée en fonction de la part de la machine
+        daily_reward = machine_share * total_aleph_per_day
         
-        rewards.append(adjusted_reward)
+        # Récompenses mensuelles (30 jours)
+        monthly_reward = daily_reward * 30
+        
+        rewards.append(monthly_reward)
     
     total_rewards = sum(rewards)  # Total sur 24 mois
 
