@@ -212,7 +212,7 @@ if selected_coin == "Alephium":
         total_aleph_24_months += monthly_reward
         rewards.append(monthly_reward)
 
- st.write(f"Récompenses projetées sur 24 mois : **{total_aleph_24_months:,.2f} ALEPH**")
+        st.write(f"Récompenses projetées sur 24 mois : **{total_aleph_24_months:,.2f} ALEPH**")
 
 elif selected_coin == "KAS":
     # Liste complète des données d'émission de KAS (comme avant)
