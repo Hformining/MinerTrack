@@ -126,6 +126,7 @@ elif selected_coin == "Alephium":
             value=float(market_price),  
             step=100.0 
         )
+        
 
     # Colonne 2 pour Alephium
     with col2:
@@ -141,6 +142,13 @@ elif selected_coin == "Alephium":
             value=float(power_consumption),  
             step=0.1, 
             format="%.2f"
+        )
+
+        initial_network_power = st.number_input(
+            "Puissance initiale du réseau (TH/s)", 
+            value=float(initial_network_power),  # Assurez-vous que le type soit float
+            step=0.1, 
+            format="%.2f
         )
 
     # Colonne 3 pour Alephium
