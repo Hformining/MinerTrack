@@ -148,7 +148,7 @@ elif selected_coin == "Alephium":
             "Puissance initiale du réseau (TH/s)", 
             value=float(initial_network_power),  # Assurez-vous que le type soit float
             step=0.1, 
-            format="%.2f
+            format="%.2f"
         )
 
     # Colonne 3 pour Alephium
