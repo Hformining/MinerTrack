@@ -145,7 +145,7 @@ elif selected_coin == "Alephium":
         )
 
         initial_network_power = st.number_input(
-            "Puissance initiale du réseau (TH/s)", 
+            "Puissance initiale du réseau (PH/s)", 
             value=float(initial_network_power),  # Assurez-vous que le type soit float
             step=0.1, 
             format="%.2f"
